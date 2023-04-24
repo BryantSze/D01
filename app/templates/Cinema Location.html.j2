@@ -1,6 +1,6 @@
 {% extends "base.html.j2" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% block title %}Cinema Location{% endblock %}
+{% block title %}Cinema Location - {{ super() }}{% endblock %}
 {% block app_content %}
     <div class="row">
         <div class="col-md-9">
@@ -9,9 +9,9 @@
                     <h3 class="panel-title" style="font-size: 24px; font-weight: bold;">Cinema Location</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="map-container">
-                    <img src="https://www.cinema.com.hk/images/map.jpg" alt="Map" style="width: 100%">
-                    </div>
+                    <img src="https://www.cinema.com.hk/images/map.jpg"
+                         alt="Map"
+                         style="width: 100%">
                 </div>
             </div>
         </div>
@@ -28,22 +28,22 @@
                             <div class="index-cinema-tab-row">
                                 <div class="index-cinema-tab-district" style="font-size: 18px; color: red">HK</div>
                                 <ul>
-                                    <div class="cinema-name" data-cinema-id="16">
+                                    <div class="index-cinema-tab-name" data-cinema-id="16">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='HK', cinemasid=16) }}"
+                                            <a href="{{ url_for('cinema_location', cinemasid=16) }}"
                                                style="color: #000000">MOViE MOViE Pacific Place (Admiralty)</a>
                                         </li>
                                     </div>
-                                    <div class="cinema-name" data-cinema-id="20">
+                                    <div class="index-cinema-tab-name" data-cinema-id="20">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='HK', cinemasid=20) }}"
-                                               style="color: #000000">MOViE MOViE Cityplaza (Taikoo Shing)</a>
+                                            <a href="/en/site/cinemainfo/MOViE-MOViE-Cityplaza-%28Taikoo-Shing%29/info"
+                                               style="color: #000000">
+                                            MOViE MOViE Cityplaza (Taikoo Shing)							</a>
                                         </li>
                                     </div>
-                                    <div class="cinema-name" data-cinema-id="12">
+                                    <div class="index-cinema-tab-name" data-cinema-id="12">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='HK', cinemasid=12) }}"
-                                               style="color: #000000">PALACE ifc</a>
+                                            <a href="/en/site/cinemainfo/PALACE-ifc/info" style="color: #000000;">PALACE ifc</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -51,34 +51,33 @@
                             <div class="index-cinema-tab-row">
                                 <div class="index-cinema-tab-district" style="font-size: 18px; color: red">KLN</div>
                                 <ul>
-                                    <div class="cinema-name" data-cinema-id="22">
+                                    <div class="index-cinema-tab-name" data-cinema-id="22">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='KLN', cinemasid=22) }}"
-                                               style="color: #000000">B+ cinema MOKO (Mong Kok East)</a>
+                                            <a href="/en/site/cinemainfo/B%2B-cinema-MOKO-%28Mong-Kok-East%29/info"
+                                               style="color: #000000">
+                                            B+ cinema MOKO (Mong Kok East)							</a>
                                         </li>
                                     </div>
-                                    <div class="cinema-name" data-cinema-id="14">
+                                    <div class="index-cinema-tab-name" data-cinema-id="14">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='KLN', cinemasid=14) }}"
+                                            <a href="/en/site/cinemainfo/B%2B-cinema-apm-%28Kwun-Tong%29/info"
                                                style="color: #000000">B+ cinema apm (Kwun Tong)</a>
                                         </li>
                                     </div>
-                                    <div class="cinema-name" data-cinema-id="21">
+                                    <div class="index-cinema-tab-name" data-cinema-id="21">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='KLN', cinemasid=21) }}"
+                                            <a href="/en/site/cinemainfo/PREMIERE-ELEMENTS/info"
                                                style="color: #000000">PREMIERE ELEMENTS</a>
                                         </li>
                                     </div>
-                                    <div class="cinema-name" data-cinema-id="10">
+                                    <div class="index-cinema-tab-name" data-cinema-id="10">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='KLN', cinemasid=10) }}"
-                                               style="color: #000000">CINEMATHEQUE</a>
+                                            <a href="/en/site/cinemainfo/CINEMATHEQUE/info" style="color: #000000;">CINEMATHEQUE</a>
                                         </li>
                                     </div>
-                                    <div class="cinema-name" data-cinema-id="5">
+                                    <div class="index-cinema-tab-name" data-cinema-id="5">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='KLN', cinemasid=5) }}"
-                                               style="color: #000000">MONGKOK</a>
+                                            <a href="/en/site/cinemainfo/MONGKOK/info" style="color: #000000;">MONGKOK</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -86,28 +85,25 @@
                             <div class="index-cinema-tab-row">
                                 <div class="index-cinema-tab-district" style="font-size: 18px; color: red">NT</div>
                                 <ul>
-                                    <div class="cinema-name" data-cinema-id="19">
+                                    <div class="index-cinema-tab-name" data-cinema-id="19">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='NT', cinemasid=19) }}"
+                                            <a href="/en/site/cinemainfo/MY-CINEMA-YOHO-MALL/info"
                                                style="color: #000000">MY CINEMA YOHO MALL</a>
                                         </li>
                                     </div>
-                                    <div class="cinema-name" data-cinema-id="6">
+                                    <div class="index-cinema-tab-name" data-cinema-id="6">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='NT', cinemasid=6) }}"
-                                               style="color: #000000">KWAI FONG</a>
+                                            <a href="/en/site/cinemainfo/KWAI-FONG/info" style="color: #000000;">KWAI FONG</a>
                                         </li>
                                     </div>
-                                    <div class="cinema-name" data-cinema-id="3">
+                                    <div class="index-cinema-tab-name" data-cinema-id="3">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='NT', cinemasid=3) }}"
-                                               style="color: #000000">TSUEN WAN</a>
+                                            <a href="/en/site/cinemainfo/TSUEN-WAN/info" style="color: #000000;">TSUEN WAN</a>
                                         </li>
                                     </div>
-                                    <div class="cinema-name" data-cinema-id="9">
+                                    <div class="index-cinema-tab-name" data-cinema-id="9">
                                         <li>
-                                            <a href="{{ url_for('cinemas', region='NT', cinemasid=9) }}"
-                                               style="color: #000000">KINGSWOOD</a>
+                                            <a href="/en/site/cinemainfo/KINGSWOOD/info" style="color: #000000;">KINGSWOOD</a>
                                         </li>
                                     </div>
                                 </ul>
