@@ -1,0 +1,431 @@
+{% extends "base.html.j2" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+<!DOCTYPE html>
+ <html lang="en">
+{% block app_content %}
+
+ <style>
+ @import url("https://fonts.googleapis.com/css?family=Lato&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ffffff;
+  color: #2b2b2b;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: "Lato", sans-serif;
+  margin: 0;
+}
+
+.button {
+  background-color: #ffffff;
+  border: none;
+  color: rgb(5, 5, 5);
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+.button1 {
+  background-color: #5f5f5f;
+  border: none;
+  background-position: right bottom, left top;
+  color: rgb(255, 255, 255);
+  padding: 10px 24px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  align-items: left;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button2 {
+  background-color: #ffffff;
+  border: 1px solid #4d4d4d;
+  color: rgb(81, 81, 81);
+  background-position: right bottom, left top;
+  padding: 10px 24px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  align-items: left;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.soild {
+  border-style: solid;
+  margin: 15px;
+  border: 1px solid #8d8d8d;
+  padding: 20px 215px 20px 215px;
+  text-align: left;
+  }
+
+
+.movie-container {
+  margin: 20px 0;
+}
+
+.movie-container select {
+  background-color: #adaaaa;
+  border: 0;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-left: 10px;
+  padding: 5px 15px 5px 15px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.container {
+  perspective: 1000px;
+  margin-bottom: 30px;
+}
+
+.seat {
+  background-color: #444451;
+  color: rgb(247, 247, 247);
+  height: 26px;
+  width: 32px;
+  margin: 3px;
+  font-size: 8px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.seat.selected {
+  background-color: green;
+}
+
+.seat.sold {
+  background-color: #e70c0c;
+}
+
+.seat:nth-of-type(2) {
+  margin-right: 18px;
+}
+
+.seat:nth-last-of-type(2) {
+  margin-left: 18px;
+}
+
+.seat:not(.sold):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.showcase .seat:not(.sold):hover {
+  cursor: default;
+  transform: scale(1);
+}
+
+.showcase {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #777;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.showcase li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+.showcase li small {
+  margin-left: 2px;
+}
+
+.row {
+  display: flex;
+}
+
+.screen {
+  background-color: #f22121;
+  height: 120px;
+  width: 100%;
+  margin: 11px 0;
+  transform: rotateX(-48deg);
+  box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);
+}
+
+p.text{
+    margin: 5px 0;
+}
+
+p.text span{
+    color: rgb(158, 248, 158);
+}
+</style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="This is a description of the page content." />
+        <meta name="keywords" content="movie, theater, seat, booking" />
+    <link rel="stylesheet" />
+    <title>Movie Seat Booking</title>
+  </head>
+  <body>
+  <button class="button">Button</button>
+  <button class="button">Button</button>
+  <button class="button">Button</button>
+  <button class="button">Button</button>
+  <button class="button">Button</button>
+ <br>
+ <button class="button1">閱覽售票情況</button>
+ <button class="button2">2</button>
+ <button class="button2">3</button>
+ <button class="button2">4</button>
+ <button class="button2">5</button>
+ <div class="movie-container">
+      <label for="movie"> Select a movie:</label>
+      <select id="movie">
+        <option value="Godzilla vs Kong"> Godzilla vs Kong </option>
+        <option value="saab">Saab</option>
+        <option value="opel">Opel</option>
+        <option value="audi">Audi</option>
+      </select>
+    </div>
+<div class="soild">(網上購票會於開畫前 60 分鐘停止)</div>
+
+    <ul class="showcase">
+      <li>
+        <div class="seat"></div>
+        <small>Available</small>
+      </li>
+      <li>
+        <div class="seat selected"></div>
+        <small>Selected</small>
+      </li>
+      <li>
+        <div class="seat sold"></div>
+        <small>Sold</small>
+      </li>
+    </ul>
+    <div class="container">
+      <div class="screen"></div>
+
+      <div class="row">
+        <div class="seat">A1</div>
+        <div class="seat">A2</div>
+        <div class="seat">A3</div>
+        <div class="seat">A4</div>
+        <div class="seat">A5</div>
+        <div class="seat">A6</div>
+        <div class="seat">A7</div>
+        <div class="seat">A8</div>
+        <div class="seat">A9</div>
+        <div class="seat">A10</div>
+        <div class="seat">A11</div>
+        <div class="seat">A12</div>
+        <div class="seat">A13</div>
+        <div class="seat sold">A14</div>
+        <div class="seat sold">A15</div>
+        <div class="seat">A16</div>
+        <div class="seat">A17</div>
+        <div class="seat">A18</div>
+        <div class="seat">A19</div>
+        <div class="seat">A20</div>
+        <div class="seat">A21</div>
+        <div class="seat">A22</div>
+        <div class="seat">A23</div>
+        <div class="seat">A24</div>
+        <div class="seat">A25</div>
+        <div class="seat">A26</div>
+        <div class="seat">A27</div>
+        <div class="seat">A28</div>
+        <div class="seat">A29</div>
+        <div class="seat">A30</div>
+      </div>
+
+      <div class="row">
+        <div class="seat">B1</div>
+        <div class="seat">B2</div>
+        <div class="seat">B3</div>
+        <div class="seat sold">B4</div>
+        <div class="seat">B5</div>
+        <div class="seat">B6</div>
+        <div class="seat">B7</div>
+        <div class="seat">B8</div>
+        <div class="seat">B9</div>
+        <div class="seat">B10</div>
+        <div class="seat">B11</div>
+        <div class="seat">B12</div>
+        <div class="seat">B13</div>
+        <div class="seat">B14</div>
+        <div class="seat">B15</div>
+        <div class="seat">B16</div>
+        <div class="seat">B17</div>
+        <div class="seat">B18</div>
+        <div class="seat">B19</div>
+        <div class="seat">B20</div>
+        <div class="seat">B21</div>
+        <div class="seat">B22</div>
+        <div class="seat">B23</div>
+        <div class="seat">B24</div>
+        <div class="seat">B25</div>
+        <div class="seat sold">B26</div>
+        <div class="seat sold">B27</div>
+        <div class="seat">B28</div>
+        <div class="seat">B29</div>
+        <div class="seat">B30</div>
+      </div>
+      <div class="row">
+        <div class="seat">C1</div>
+        <div class="seat">C2</div>
+        <div class="seat">C3</div>
+        <div class="seat">C4</div>
+        <div class="seat">C5</div>
+        <div class="seat">C6</div>
+        <div class="seat">C7</div>
+        <div class="seat">C8</div>
+        <div class="seat">C9</div>
+        <div class="seat">C10</div>
+        <div class="seat">C11</div>
+        <div class="seat">C12</div>
+        <div class="seat">C13</div>
+        <div class="seat">C14</div>
+        <div class="seat">C15</div>
+        <div class="seat">C16</div>
+        <div class="seat">C17</div>
+        <div class="seat">C18</div>
+        <div class="seat">C19</div>
+        <div class="seat">C20</div>
+        <div class="seat">C21</div>
+        <div class="seat">C22</div>
+        <div class="seat">C23</div>
+        <div class="seat">C24</div>
+        <div class="seat">C25</div>
+        <div class="seat">C26</div>
+        <div class="seat">C27</div>
+        <div class="seat">C28</div>
+        <div class="seat sold">C29</div>
+        <div class="seat sold">C30</div>
+      </div>
+      <div class="row">
+        <div class="seat">D1</div>
+        <div class="seat">D2</div>
+        <div class="seat">D3</div>
+        <div class="seat">D4</div>
+        <div class="seat">D5</div>
+        <div class="seat">D6</div>
+        <div class="seat">D7</div>
+        <div class="seat">D8</div>
+        <div class="seat">D9</div>
+        <div class="seat">D10</div>
+        <div class="seat">D11</div>
+        <div class="seat">D12</div>
+        <div class="seat">D13</div>
+        <div class="seat">D14</div>
+        <div class="seat">D15</div>
+        <div class="seat">D16</div>
+        <div class="seat">D17</div>
+        <div class="seat">D18</div>
+        <div class="seat">D19</div>
+        <div class="seat">D20</div>
+        <div class="seat">D21</div>
+        <div class="seat">D22</div>
+        <div class="seat">D23</div>
+        <div class="seat">D24</div>
+        <div class="seat sold">D25</div>
+        <div class="seat sold">D26</div>
+        <div class="seat">D27</div>
+        <div class="seat">D28</div>
+        <div class="seat">D29</div>
+        <div class="seat">D30</div>
+      </div>
+      <div class="row">
+        <div class="seat">E1</div>
+        <div class="seat">E2</div>
+        <div class="seat">E3</div>
+        <div class="seat">E4</div>
+        <div class="seat">E5</div>
+        <div class="seat">E6</div>
+        <div class="seat">E7</div>
+        <div class="seat">E8</div>
+        <div class="seat">E9</div>
+        <div class="seat">E10</div>
+        <div class="seat">E11</div>
+        <div class="seat">E12</div>
+        <div class="seat">E13</div>
+        <div class="seat">E14</div>
+        <div class="seat">E15</div>
+        <div class="seat">E16</div>
+        <div class="seat">E17</div>
+        <div class="seat">E18</div>
+        <div class="seat">E19</div>
+        <div class="seat">E20</div>
+        <div class="seat">E21</div>
+        <div class="seat">E22</div>
+        <div class="seat">E23</div>
+        <div class="seat">E24</div>
+        <div class="seat sold">E25</div>
+        <div class="seat sold">E26</div>
+        <div class="seat">E27</div>
+        <div class="seat">E28</div>
+        <div class="seat">E29</div>
+        <div class="seat">E30</div>
+      </div>
+      <div class="row">
+        <div class="seat">F1</div>
+        <div class="seat">F2</div>
+        <div class="seat">F3</div>
+        <div class="seat">F4</div>
+        <div class="seat">F5</div>
+        <div class="seat">F6</div>
+        <div class="seat">F7</div>
+        <div class="seat">F8</div>
+        <div class="seat">F9</div>
+        <div class="seat">F10</div>
+        <div class="seat">F11</div>
+        <div class="seat">F12</div>
+        <div class="seat">F13</div>
+        <div class="seat">F14</div>
+        <div class="seat">F15</div>
+        <div class="seat">F16</div>
+        <div class="seat">F17</div>
+        <div class="seat">F18</div>
+        <div class="seat">F19</div>
+        <div class="seat">F20</div>
+        <div class="seat">F21</div>
+        <div class="seat">F22</div>
+        <div class="seat">F23</div>
+        <div class="seat">F24</div>
+        <div class="seat sold">F25</div>
+        <div class="seat sold">F26</div>
+        <div class="seat">F27</div>
+        <div class="seat">F28</div>
+        <div class="seat">F29</div>
+        <div class="seat">F30</div>
+      </div>
+    </div>
+<div class="soild">(網上購票會於開畫前 60 分鐘停止)</div>
+  </body>
+
+{% endblock %}
+</html>

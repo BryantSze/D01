@@ -1,0 +1,114 @@
+{% extends 'bootstrap/base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cinema Booking</title>
+	<style>
+		.cinema-booking {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  margin-top: 50px;
+		}
+
+		.seats {
+		  display: flex;
+		  flex-wrap: wrap;
+		  justify-content: center;
+		  margin-bottom: 20px;
+		}
+
+		.seat {
+		  width: 50px;
+		  height: 50px;
+		  margin: 10px;
+		  background-color: #ddd;
+		  cursor: pointer;
+		}
+
+		.seat.selected {
+		  background-color: #bada55;
+		}
+
+		.screen {
+		  width: 80%;
+		  height: 20px;
+		  background-color: #333;
+		  margin-bottom: 20px;
+		}
+
+		.details {
+		  display: flex;
+		  justify-content: space-between;
+		  width: 80%;
+		  margin-bottom: 20px;
+		}
+
+		.btn {
+		  padding: 10px 20px;
+		  background-color: #333;
+		  color: #fff;
+		  border: none;
+		  border-radius: 5px;
+		  cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	{% set movie = 'Avengers: Endgame' %}
+	{% set time = '7:00 PM' %}
+	{% set price = 10 %}
+
+	<div class="cinema-booking">
+	  <h2>Cinema Booking</h2>
+	  <div class="seats">
+	    <div class="seat"></div>
+	    <div class="seat"></div>
+	    <div class="seat"></div>
+	    <div class="seat"></div>
+	    <div class="seat"></div>
+	    <div class="seat"></div>
+	    <div class="seat"></div>
+	    <div class="seat"></div>
+	    <div class="seat"></div>
+	    <div class="seat"></div>
+	  </div>
+	  <div class="screen"></div>
+	  <div class="details">
+	    <p>Movie: {{ movie }}</p>
+	    <p>Time: {{ time }}</p>
+	    <p>Price: ${{ price }}</p>
+	  </div>
+	  <button class="btn">Book Now</button>
+	</div>
+
+	<script>
+		const seats = document.querySelectorAll('.seat');
+		const count = document.getElementById('count');
+		const total = document.getElementById('total');
+		const movieSelect = document.getElementById('movie');
+
+		let ticketPrice = {{ price }};
+
+		function updateSelectedCount() {
+		  const selectedSeats = document.querySelectorAll('.seat.selected');
+		  const selectedSeatsCount = selectedSeats.length;
+
+		  count.innerText = selectedSeatsCount;
+		  total.innerText = selectedSeatsCount * ticketPrice;
+		}
+
+		movieSelect.addEventListener('change', e => {
+		  ticketPrice = +e.target.value;
+		  updateSelectedCount();
+		});
+
+		seats.forEach(seat => {
+		  seat.addEventListener('click', () => {
+		    seat.classList.toggle('selected');
+		    updateSelectedCount();
+		  });
+		});
+	</script>
+</body>
+</html>

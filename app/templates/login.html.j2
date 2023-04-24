@@ -1,0 +1,21 @@
+{% extends "base.html.j2" %} 
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+    <div class="row">
+        <div class="col-md-8">
+            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/4de53d9a3e9e189067c21a0d6a79e5de_1679394119.jpg"
+                 alt="Cinema Image">
+        </div>
+        <div class="col-md-4">
+            <h1>{{ _('Sign In') }}</h1>
+            {{ wtf.quick_form(form) }}
+            <br/>
+            <p>
+                {{ _('New User?') }} <a href="{{ url_for('register') }}">{{ _('Click to Register!') }}</a>
+            </p>
+            <p>
+                {{ _('Forgot Your Password?') }} <a href="{{ url_for('reset_password_request') }}">{{ _('Click to Reset It') }}</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

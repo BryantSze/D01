@@ -1,0 +1,119 @@
+{% extends "base.html.j2" %}
+{% block title %}MY CINEMA YOHO MALL{% endblock %}
+{% block app_content %}
+    <style>
+    .banner {
+        position: relative;
+    }
+
+    .cinemaName {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 660px;
+        height: 290px;
+        overflow: hidden;
+        padding: 15px 20px 15px 20px;
+        color: rgb(255,255,255);
+        font-size: 50px;
+        font-weight: bold;
+        z-index: 1;
+        font-style: normal;
+        font-family: Arial,"Microsoft JhengHei",sans-serif;
+        margin-top: 0px;
+        margin-bottom: 0px;        
+    }
+
+    .banner img {
+        width: 133.35%;
+        height: auto;
+    }
+
+    .infoArea {
+        padding: 20px;
+        float: none;
+        height: 180px;
+        background-color: #f1ebdf;
+        box-sizing: border-box;
+        
+    }
+
+    .seatNum {
+        color: #e3c27b;
+        font-family: 'Impact';
+        font-size: 70px;
+    }
+
+    .seatUnit {
+        text-transform: uppercase;
+        margin-right: 15px;
+        color: #e3c27b;
+        font-family: 'Impact';
+        font-size: 32px;
+    }
+
+    .houseNum {
+        color: #e3c27b;
+        font-family: 'Impact';
+        font-size: 70px;
+    }
+
+    .houseUnit{
+        text-transform: uppercase;
+        margin-right: 15px;
+        color: #e3c27b;
+        font-family: 'Impact';
+        font-size: 32px;
+    }
+
+    .addArea {
+        padding: 10px;
+        background-color: #e9e9cc;
+        float: none;
+    }
+
+    .address {
+        font-size: 14px;
+        font-family: Arial, "Microsoft JhengHei", sans-serif;
+        font-style: normal;
+        color: #9C7738;
+    }
+
+
+    </style>
+    <div class="cinema-info-container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" style="font-size: 24px; font-weight: bold;">
+                            <a href="{{ url_for('cinema_location') }}">Cinemas</a>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="banner">
+                            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/misc/misc_cka_19_1500871550.jpg"
+                                 alt="banner">
+                            <div class="cinemaName">
+                                <h1 class="cinema-header">MY CINEMA YOHO MALL</h1>
+                            </div>
+                        </div>
+                        <div class="infoArea">
+                            <div class="hidden-xs">
+                                <span class="seatNum">1211</span>
+                                <span class="seatUnit">SEATS</span>
+                                <span class="houseNum">8</span>
+                                <span class="houseUnit">HOUSES</span>
+                            </div>
+                            <div class="addArea">
+                                <div class="address hidden-xs">
+                                    <span class="address">Address: Shop 1021, Level 1, YOHO MALL I, 9 Long Yat Road, Yuen Long</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
