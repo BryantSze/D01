@@ -76,7 +76,7 @@ class BookingForm(FlaskForm):
     movie = StringField('Movie', validators=[DataRequired()])
     price = StringField('Price', validators=[DataRequired()])
     submit = SubmitField('Book')
-
+    
 class SocialForm(FlaskForm):
     post = TextAreaField(_l('Say something'), validators=[DataRequired()])
     title = StringField('Title', validators=[DataRequired()])

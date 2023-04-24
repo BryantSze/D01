@@ -17,7 +17,7 @@
     </style>
 {% endblock %}
 {% block navbar %}
-    <nav class="navbar navbar-default" style="background-color: rgb(126, 119, 119); color: rgb(255, 255, 255); border-color: #e7e7e7; border-top: 3px solid red;"">
+    <nav class="navbar navbar-default" style="background-color: rgb(126, 119, 119); color: rgb(255, 255, 255); border-color: #e7e7e7; border-top: 3px solid red;">
         <div class="container">
             <div class="navbar-header">
                 <button type="button"
@@ -35,15 +35,6 @@
                 <ul class="nav navbar-nav">
                     <li>
                         <a href="{{ url_for('index') }}" style="color: white;">{{ _('Home') }}</a>
-                    </li>
-                    {# <li>
-                        <a href="{{ url_for('home') }}" style="color: white;">{{ _('book') }}</a>
-                    </li>#}
-                    <li>
-                        <a href="{{ url_for('create_social') }}" style="color: white;">{{ _('Social') }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('advertise') }}" style="color: white;">{{ _('Advertise') }}</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

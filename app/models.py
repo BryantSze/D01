@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta, timezone
 from hashlib import md5
 from app import app, db, login
-import jwt
 from flask_sqlalchemy import SQLAlchemy
+import jwt
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -126,14 +126,38 @@ class Booking(db.Model):
     price = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'), nullable=False)
+    cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'), nullable=False)
+    
+
 
     user = db.relationship('User', backref='bookings')
     seat = db.relationship('Seat', backref='booking_history', foreign_keys=[seat_id])
+    cinema = db.relationship('Cinema', backref='booking_history', foreign_keys=[cinema_id])
+
 
     def __repr__(self):
         return '<Booking %r>' % self.id
 
-db = SQLAlchemy()
+class Cinema(db.Model):
+    __tablename__ = 'cinema'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    bookings = db.relationship("Booking", back_populates="cinema")
+    parent_cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'))
+    
+
+
+class Showtime(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False)
+    room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
+
+
+class ticket(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
 
 class Social(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -153,3 +177,4 @@ class Ad(db.Model):
 
     def __repr__(self):
         return f'<Ad {self.title}>'
+    

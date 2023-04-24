@@ -64,63 +64,6 @@ def explore():
                            prev_url=prev_url)
 
 
-@app.route('/ad/create', methods=['GET', 'POST'])
-def create_ad():
-    form = AdForm()
-    if form.validate_on_submit():
-        ad = Ad(title=form.title.data, description=form.description.data, image_url=form.image_url.data)
-        db.session.add(ad)
-        db.session.commit()
-        ads = Ad.query.order_by(Ad.created_at.desc()).all()
-        return redirect(url_for('index'))
-    return render_template('create_ad.html.j2', form=form, ads=ads)
-
-
-@app.route('/advertise', methods=['GET', 'POST'])
-def advertise():
-    
-    form = AdvertiseForm()
-    if form.validate_on_submit():
-        title = form.title.data
-        content = form.content.data
-        image = form.image.data
-        return render_template('advertise.html.j2', form=form, success=True)
-    return render_template('advertise.html.j2', form=form)
-
-
-@app.route('/social/create', methods=['GET', 'POST'])
-def create_social():
-    form = SocialForm()
-    if form.validate_on_submit():
-        social = Social(title=form.title.data, content=form.content.data)
-        db.session.add(social)
-        db.session.commit()
-        return redirect(url_for('index'))
-    return render_template('create_social.html.j2', form=form)
-
-
-@app.route('/social/<int:id>/edit', methods=['GET', 'POST'])
-def edit_social(id):
-    form = EditProfileForm(current_user.username)
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.about_me = form.about_me.data
-        db.session.commit()
-        flash(_('Your changes have been saved.'))
-        return redirect(url_for('edit_profile'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.about_me.data = current_user.about_me
-    return render_template('edit_social.html.j2', form=form, social=social)
-
-
-@app.route('/social/<int:id>/delete', methods=['POST'])
-def delete_social(id):
-    social = Social.query.get_or_404(id)
-    db.session.delete(social)
-    db.session.commit()
-    return redirect(url_for('index'))
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -306,3 +249,62 @@ def cinema_details():
     email = 'info@cinema.com.hk'
     website = 'https://www.cinema.com.hk'
     return render_template('Cinema Location.html.j2', address=address, phone=phone, email=email, website=website)
+
+
+@app.route('/ad/create', methods=['GET', 'POST'])
+def create_ad():
+    form = AdForm()
+    if form.validate_on_submit():
+        ad = Ad(title=form.title.data, description=form.description.data, image_url=form.image_url.data)
+        db.session.add(ad)
+        db.session.commit()
+        ads = Ad.query.order_by(Ad.created_at.desc()).all()
+        return redirect(url_for('index'))
+    return render_template('create_ad.html.j2', form=form, ads=ads)
+
+
+@app.route('/advertise', methods=['GET', 'POST'])
+def advertise():
+
+    form = AdvertiseForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        image = form.image.data
+        return render_template('advertise.html.j2', form=form, success=True)
+    return render_template('advertise.html.j2', form=form)
+
+
+@app.route('/social/create', methods=['GET', 'POST'])
+def create_social():
+    form = SocialForm()
+    if form.validate_on_submit():
+        social = Social(title=form.title.data, content=form.content.data)
+        db.session.add(social)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('create_social.html.j2', form=form)
+
+
+@app.route('/social/<int:id>/edit', methods=['GET', 'POST'])
+def edit_social(id):
+    form = EditProfileForm(current_user.username)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash(_('Your changes have been saved.'))
+        return redirect(url_for('edit_profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.about_me.data = current_user.about_me
+    return render_template('edit_social.html.j2', form=form, social=social)
+
+
+@app.route('/social/<int:id>/delete', methods=['POST'])
+def delete_social(id):
+    social = Social.query.get_or_404(id)
+    db.session.delete(social)
+    db.session.commit()
+    return redirect(url_for('index'))
+
