@@ -1,7 +1,16 @@
 {% extends 'bootstrap/base.html' %}
+
+{% block title %}
+      {% if title %}
+          {{ title }} - Microblog
+      {% else %}
+          {{ _('Welcome to Microblog') }}
+      {% endif %}
+{% endblock %}
+
 {% block styles %}
-    {{ super() }}
-    <style>
+      {{ super() }}
+      <style>
           .logo-row {
               display: flex;
               align-items: center;
@@ -14,10 +23,11 @@
           .banner {
               width: 75%;
           }
-    </style>
+      </style>
 {% endblock %}
+
 {% block navbar %}
-    <nav class="navbar navbar-default" style="background-color: rgb(126, 119, 119); color: rgb(255, 255, 255); border-color: #e7e7e7; border-top: 3px solid red;"">
+    <nav class="navbar navbar-default" style="background-color: rgb(126, 119, 119); color: rgb(255, 255, 255); border-color: #e7e7e7; border-top: 3px solid red;"" >
         <div class="container">
             <div class="navbar-header">
                 <button type="button"
@@ -30,9 +40,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}" style="color: white;">Microblog</a>
             </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
                 <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{{ url_for('index') }}" style="color: white;">{{ _('Home') }}</a>
+                    </li>
                     <li>
                         <a href="{{ url_for('explore') }}" style="color: white;">{{ _('Explore') }}</a>
                     </li>
@@ -43,10 +57,10 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
                         <li>
-                            <a href="{{ url_for('login') }}" style="color: white;">{{ _('Login') }}</a>
+                            <a href="{{ url_for('login') }}" style="color: white;">{{ _('登入') }}</a>
                         </li>
                         <li>
-                            <a href="{{ url_for('register') }}" style="color: white;">{{ _('Register') }}</a>
+                            <a href="{{ url_for('register') }}" style="color: white;">{{ _('成為會員') }}</a>
                         </li>
                     {% else %}
                         <li>
@@ -60,33 +74,50 @@
             </div>
         </div>
     </nav>
+=======
+      <nav class="navbar navbar-default">
+          <div class="container">
+              <ul class="nav navbar-nav navbar-right">
+                  {% if current_user.is_anonymous %}
+                      <li>
+                          <a href="{{ url_for('login') }}">{{ _('Login') }}</a>
+                      </li>
+                      <li>
+                          <a href="{{ url_for('register') }}">{{ _('Register') }}</a>
+                      </li>
+                  {% else %}
+                      <li>
+                          <a href="{{ url_for('user', username=current_user.username) }}">{{ _('Profile') }}</a>
+                      </li>
+                      <li>
+                          <a href="{{ url_for('logout') }}">{{ _('Logout') }}</a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </div>
+      </nav>
 {% endblock %}
+
 {% block content %}
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}<div class="alert alert-info" role="alert">{{ message }}</div>{% endfor %}
-            {% endif %}
-        {% endwith %}
-        {# application content needs to be provided in the app_content block #}
-        <div class="logo-row">
-            <a href="{{ url_for('index') }}">
-                <img src="https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/promotions/cinemas-offers/images/broadway-circuit-logo.jpg"
-                     alt="Logo"
-                     class="logo"
-                     style="width: 200px">
-            </a>
-            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/MGK-728-x-90-GDN_26437d0fa5e23b.JPG"
-                 alt="Banner"
-                 class="banner"
-                 style="flex-grow: 1;
-                        text-align: right">
-        </div>
-        {% block app_content %}{% endblock %}
-    </div>
+      <div class="container">
+          {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                  {% for message in messages %}<div class="alert alert-info" role="alert">{{ message }}</div>{% endfor %}
+              {% endif %}
+          {% endwith %}
+          {# application content needs to be provided in the app_content block #}
+          <div class="logo-row">
+              <a href="{{ url_for('index') }}">
+                  <img src="https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/promotions/cinemas-offers/images/broadway-circuit-logo.jpg" alt="Logo" class="logo" style ="width: 200px;">
+              </a>
+              <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/MGK-728-x-90-GDN_26437d0fa5e23b.JPG" alt="Banner" class="banner" style="flex-grow: 1; text-align: right;">
+          </div>
+          {% block app_content %}{% endblock %}
+      </div>
 {% endblock %}
+
 {% block scripts %}
-    {{ super() }}
-    {{ moment.include_moment() }}
-    {{ moment. lang(g. locale) }}
+      {{ super() }}
+      {{ moment.include_moment() }}
+      {{ moment. lang(g. locale) }}
 {% endblock %}

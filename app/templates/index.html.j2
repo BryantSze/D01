@@ -1,147 +1,123 @@
 {% extends "base.html.j2" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% block title %}Home{% endblock %}
+{% block title %}Home - {{ super() }}{% endblock %}
 {% block app_content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-9">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="menu-item active row">
-                            <div class="col-md-6">
-                                <h3 class="panel-title" style="font-size: 24px; font-weight: bold;">
-                                    <a href="#"
-                                       data-target="ticketing"
-                                       class="active"
-                                       onclick="togglePanel('ticketing')">Ticketing</a>
-                                </h3>
-                            </div>
-                            <div class="col-md-6">
-                                <h3 class="panel-title" style="font-size: 24px; font-weight: bold;">
-                                    <a href="#" data-target="booking" onclick="togglePanel('booking')">Booking</a>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-9" id="ticketing">
-                                <!-- Add your ticketing content here -->
-                                Ticketing panel-body content
-                            </div>
-                            <div class="col-md-9" id="booking" style="display:none;">
-                                <!-- Add your booking content here -->
-                                Booking panel-body content
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ticketing</h3>
+                </div>
+                <div class="panel-body">
+                    <!-- Add your ticketing content here -->
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" style="font-size: 24px; font-weight: bold;">
-                            <a href="{{ url_for('cinema_location') }}">Cinemas</a>
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="index-cinema-tab-content-container">
-                            <div class="index-cinema-tab-content">
-                                <div class="index-cinema-tab-row">
-                                    <div class="index-cinema-tab-district" style="font-size: 18px; color: red">HK</div>
-                                    <ul>
-                                        <div class="cinema-name" data-cinema-id="16">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='HK', cinemasid=16) }}" style="color: #000000">MOViE MOViE Pacific Place (Admiralty)</a>
-                                            </li>
-                                        </div>
-                                        <div class="cinema-name" data-cinema-id="20">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='HK', cinemasid=20) }}" style="color: #000000">MOViE MOViE Cityplaza (Taikoo Shing)</a>
-                                            </li>
-                                        </div>
-                                        <div class="cinema-name" data-cinema-id="12">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='HK', cinemasid=12) }}" style="color: #000000;">PALACE ifc</a>
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </div>
-                                <div class="index-cinema-tab-row">
-                                    <div class="index-cinema-tab-district" style="font-size: 18px; color: red">KLN</div>
-                                    <ul>
-                                        <div class="cinema-name" data-cinema-id="22">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='KLN', cinemasid=22) }}" style="color: #000000">B+ cinema MOKO (Mong Kok East)</a>
-                                            </li>
-                                        </div>
-                                        <div class="cinema-name" data-cinema-id="14">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='KLN', cinemasid=14) }}" style="color: #000000">B+ cinema apm (Kwun Tong)</a>
-                                            </li>
-                                        </div>
-                                        <div class="cinema-name" data-cinema-id="21">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='KLN', cinemasid=21) }}" style="color: #000000">PREMIERE ELEMENTS</a>
-                                            </li>
-                                        </div>
-                                        <div class="cinema-name" data-cinema-id="10">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='KLN', cinemasid=10) }}" style="color: #000000;">CINEMATHEQUE</a>
-                                            </li>
-                                        </div>
-                                        <div class="cinema-name" data-cinema-id="5">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='KLN', cinemasid=5) }}" style="color: #000000;">MONGKOK</a>
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </div>
-                                <div class="index-cinema-tab-row">
-                                    <div class="index-cinema-tab-district" style="font-size: 18px; color: red">NT</div>
-                                    <ul>
-                                        <div class="cinema-name" data-cinema-id="19">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='NT', cinemasid=19) }}" style="color: #000000">MY CINEMA YOHO MALL</a>
-                                            </li>
-                                        </div>
-                                        <div class="cinema-name" data-cinema-id="6">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='NT', cinemasid=6) }}" style="color: #000000;">KWAI FONG</a>
-                                            </li>
-                                        </div>
-                                        <div class="cinema-name" data-cinema-id="3">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='NT', cinemasid=3) }}" style="color: #000000;">TSUEN WAN</a>
-                                            </li>
-                                        </div>
-                                        <div class="cinema-name" data-cinema-id="9">
-                                            <li>
-                                                <a href="{{ url_for('cinemas', region='NT', cinemasid=9) }}" style="color: #000000;">KINGSWOOD</a>
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </div>
-                                <div class="clearfix"></div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="font-size: 24px; font-weight: bold;">
+                        <a href="{{ url_for('cinema_location') }}">Cinemas</a>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="index-cinema-tab-content-container">
+                        <div class="index-cinema-tab-content">
+                            <div class="index-cinema-tab-row">
+                                <div class="index-cinema-tab-district"
+                                     style="font-size: 18px;
+                                            color: red">HK</div>
+                                <ul>
+                                    <div class="index-cinema-tab-name" data-cinema-id="16">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/MOViE-MOViE-Pacific-Place-%28Admiralty%29/info"
+                                               style="color: #000000">
+                                            MOViE MOViE Pacific Place (Admiralty)							</a>
+                                        </li>
+                                    </div>
+                                    <div class="index-cinema-tab-name" data-cinema-id="20">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/MOViE-MOViE-Cityplaza-%28Taikoo-Shing%29/info"
+                                               style="color: #000000">
+                                            MOViE MOViE Cityplaza (Taikoo Shing)							</a>
+                                        </li>
+                                    </div>
+                                    <div class="index-cinema-tab-name" data-cinema-id="12">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/PALACE-ifc/info" style="color: #000000;">PALACE ifc</a>
+                                        </li>
+                                    </div>
+                                </ul>
                             </div>
+                            <div class="index-cinema-tab-row">
+                                <div class="index-cinema-tab-district"
+                                     style="font-size: 18px;
+                                            color: red">KLN</div>
+                                <ul>
+                                    <div class="index-cinema-tab-name" data-cinema-id="22">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/B%2B-cinema-MOKO-%28Mong-Kok-East%29/info"
+                                               style="color: #000000">
+                                            B+ cinema MOKO (Mong Kok East)							</a>
+                                        </li>
+                                    </div>
+                                    <div class="index-cinema-tab-name" data-cinema-id="14">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/B%2B-cinema-apm-%28Kwun-Tong%29/info"
+                                               style="color: #000000">B+ cinema apm (Kwun Tong)</a>
+                                        </li>
+                                    </div>
+                                    <div class="index-cinema-tab-name" data-cinema-id="21">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/PREMIERE-ELEMENTS/info"
+                                               style="color: #000000">PREMIERE ELEMENTS</a>
+                                        </li>
+                                    </div>
+                                    <div class="index-cinema-tab-name" data-cinema-id="10">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/CINEMATHEQUE/info" style="color: #000000;">CINEMATHEQUE</a>
+                                        </li>
+                                    </div>
+                                    <div class="index-cinema-tab-name" data-cinema-id="5">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/MONGKOK/info" style="color: #000000;">MONGKOK</a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </div>
+                            <div class="index-cinema-tab-row">
+                                <div class="index-cinema-tab-district"
+                                     style="font-size: 18px;
+                                            color: red">NT</div>
+                                <ul>
+                                    <div class="index-cinema-tab-name" data-cinema-id="19">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/MY-CINEMA-YOHO-MALL/info"
+                                               style="color: #000000">MY CINEMA YOHO MALL</a>
+                                        </li>
+                                    </div>
+                                    <div class="index-cinema-tab-name" data-cinema-id="6">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/KWAI-FONG/info" style="color: #000000;">KWAI FONG</a>
+                                        </li>
+                                    </div>
+                                    <div class="index-cinema-tab-name" data-cinema-id="3">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/TSUEN-WAN/info" style="color: #000000;">TSUEN WAN</a>
+                                        </li>
+                                    </div>
+                                    <div class="index-cinema-tab-name" data-cinema-id="9">
+                                        <li>
+                                            <a href="/en/site/cinemainfo/KINGSWOOD/info" style="color: #000000;">KINGSWOOD</a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-function togglePanel(panelId) {
-    var ticketingPanel = document.getElementById('ticketing');
-    var bookingPanel = document.getElementById('booking');
-    
-    if (panelId === 'ticketing') {
-        ticketingPanel.style.display = 'block';
-        bookingPanel.style.display = 'none';
-    } else if (panelId === 'booking') {
-        ticketingPanel.style.display = 'none';
-        bookingPanel.style.display = 'block';
-    }
-}
-    </script>
 {% endblock %}

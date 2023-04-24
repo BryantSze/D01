@@ -232,15 +232,6 @@ def profile(username):
 def cinema_location():
     return render_template('Cinema Location.html.j2')
 
-@app.route('/<region>/cinemas/<int:cinemasid>')
-def cinemas(region, cinemasid):
-    # Logic to retrieve cinema data based on cinemasid and region
-    # ...
-
-    # Render the template for the specified cinema and region
-    template_path = 'Cinemas/{region}/cinemasid={cinemasid}.html.j2'.format(region=region, cinemasid=cinemasid)
-    return render_template(template_path)
-
 
 @app.route('/cinema-details', endpoint='cinema_details')
 def cinema_details():
