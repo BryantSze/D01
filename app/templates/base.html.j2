@@ -34,13 +34,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="{{ url_for('index') }}" style="color: white;">{{ _('Home') }}</a>
+                        <a href="{{ url_for('index') }}" style="color: white;"><span class="glyphicon glyphicon-home"></span>{{ _(' Home') }}</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
                         <li>
-                            <a href="{{ url_for('login') }}" style="color: white;">{{ _('Login') }}</a>
+                            <a href="{{ url_for('login') }}" style="color: white;"><span class="glyphicon glyphicon-user"></span>{{ _(' Login') }}</a>
                         </li>
                         <li>
                             <a href="{{ url_for('register') }}" style="color: white;">{{ _('Register') }}</a>
