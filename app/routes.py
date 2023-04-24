@@ -249,3 +249,19 @@ def cinema_details():
     email = 'info@cinema.com.hk'
     website = 'https://www.cinema.com.hk'
     return render_template('Cinema Location.html.j2', address=address, phone=phone, email=email, website=website)
+
+@app.route('/mario')
+def mario():
+    return render_template('mario.html.j2')
+
+@app.route('/dog')
+def dog():
+    return render_template('dog.html.j2')
+
+@app.route('/dead')
+def dead():
+    return render_template('dead.html.j2')
+
+@app.route('/renfield')
+def renfield():
+    return render_template('renfield.html.j2')
