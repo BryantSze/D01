@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField
+    TextAreaField, FileField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
-    Length
+    Length, URL
 from flask_babel import _, lazy_gettext as _l
 from app.models import User ,Booking
 
@@ -76,3 +76,19 @@ class BookingForm(FlaskForm):
     movie = StringField('Movie', validators=[DataRequired()])
     price = StringField('Price', validators=[DataRequired()])
     submit = SubmitField('Book')
+
+class SocialForm(FlaskForm):
+    post = TextAreaField(_l('Say something'), validators=[DataRequired()])
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+
+class AdForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    image_url = StringField('Image URL', validators=[DataRequired(), URL()])
+    submit = SubmitField('Create Ad')
+
+class AdvertiseForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    image = FileField('Image', validators=[DataRequired()])
