@@ -249,4 +249,3 @@ def cinema_details():
     email = 'info@cinema.com.hk'
     website = 'https://www.cinema.com.hk'
     return render_template('Cinema Location.html.j2', address=address, phone=phone, email=email, website=website)
-
