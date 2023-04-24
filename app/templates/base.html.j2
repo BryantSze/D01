@@ -36,9 +36,9 @@
                     <li>
                         <a href="{{ url_for('index') }}" style="color: white;">{{ _('Home') }}</a>
                     </li>
-                    {# <li>
-                        <a href="{{ url_for('home') }}" style="color: white;">{{ _('book') }}</a>
-                    </li>#}
+                    <li>
+                        <a href="{{ url_for('booking' , booking_id=123) }}" style="color: white;">{{ _('book') }}</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
