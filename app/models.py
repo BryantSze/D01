@@ -159,8 +159,6 @@ class Showtime(db.Model):
 class ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-db = SQLAlchemy()
-
 class Social(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
