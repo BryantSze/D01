@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from hashlib import md5
 from app import app, db, login
+from flask_sqlalchemy import SQLAlchemy
 import jwt
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -126,20 +127,25 @@ class Booking(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'), nullable=False)
     cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'), nullable=False)
+    
 
 
     user = db.relationship('User', backref='bookings')
     seat = db.relationship('Seat', backref='booking_history', foreign_keys=[seat_id])
-    cinema = db.relationship('Cinema', backref='booking_history', foreign_keys=[seat_id])
+    cinema = db.relationship('Cinema', backref='booking_history', foreign_keys=[cinema_id])
 
 
     def __repr__(self):
         return '<Booking %r>' % self.id
 
 class Cinema(db.Model):
+    __tablename__ = 'cinema'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     location = db.Column(db.String(100), nullable=False)
+    bookings = db.relationship("Booking", back_populates="cinema")
+    parent_cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'))
+    
 
 
 class Showtime(db.Model):
@@ -153,4 +159,22 @@ class Showtime(db.Model):
 class ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
+class Social(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Social('{self.title}', '{self.date_posted}')"
+
+class Ad(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<Ad {self.title}>'
     
