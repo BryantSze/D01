@@ -20,9 +20,29 @@
     <table class="table">
       <tbody>
         <tr>
+        <!DOCTYPE html>
+<html>
+  <head>
+    <title>播放YouTube</title>
+  </head>
+  <body>
+    {% set youtube_id = "dQw4w9WgXcQ" %}
+    {% set youtube_link = "https://www.youtube.com/watch?v=TnGl01FkMMo&t=1s&ab_channel=Illumination" + youtube_id %}
 
-    <button id="play-button">Trailer</button>
-    <iframe id="player" width="550" height="250" src="https://www.youtube.com/watch?v=TnGl01FkMMo&ab_channel=Illumination{{ video_id }}" ></iframe>
+    <button id="play-button">播放</button>
+
+    <script>
+      var playButton = document.getElementById("play-button");
+      var youtubeLink = "{{ youtube_link }}";
+
+      playButton.addEventListener("click", function() {
+        window.open(youtubeLink, "_blank");
+      });
+    </script>
+  </body>
+</html>
+
+    
         </tr>
 
         <button onclick="share()">Share to facebook</button>

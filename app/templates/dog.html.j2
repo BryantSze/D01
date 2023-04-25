@@ -18,8 +18,28 @@
     <table class="table">
       <tbody>
         <tr>
-    <button id="play-button">Trailer</button>
-    <iframe id="player" width="550" height="250" src="https://www.youtube.com/watch?v=QrPyiBGD9nc&ab_channel=iQIYIDISTRIBUTION{{ video_id }}" ></iframe>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>播放YouTube</title>
+  </head>
+  <body>
+    {% set youtube_id = "dQw4w9WgXcQ" %}
+    {% set youtube_link = "https://www.youtube.com/watch?v=QrPyiBGD9nc&ab_channel=iQIYIDISTRIBUTION" + youtube_id %}
+
+    <button id="play-button">播放</button>
+
+    <script>
+      var playButton = document.getElementById("play-button");
+      var youtubeLink = "{{ youtube_link }}";
+
+      playButton.addEventListener("click", function() {
+        window.open(youtubeLink, "_blank");
+      });
+    </script>
+  </body>
+</html>
+
         </tr>
 
         <button onclick="share()">Share to facebook</button>
