@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField, FileField
+    TextAreaField, FileField,  SelectField, DateField, TimeField, EmailField , SelectMultipleField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length, URL
 from flask_babel import _, lazy_gettext as _l
@@ -69,12 +69,15 @@ class PostForm(FlaskForm):
     submit = SubmitField(_l('Submit'))
 
 class BookingForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired()])
-    date = StringField('Date', validators=[DataRequired()])
-    time = StringField('Time', validators=[DataRequired()])
-    movie = StringField('Movie', validators=[DataRequired()])
-    price = StringField('Price', validators=[DataRequired()])
+    username = StringField(_l('Username'), validators=[DataRequired()])
+    email = EmailField('Email', validators=[DataRequired()])
+    date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
+    movie = SelectField('Movie', choices=[('mario', 'mario'), ('kiko', 'kiko'), ('omg', 'omg')], validators=[DataRequired()])
+    price = SelectField('Price Special Tickets HKD40 Normal Tickets HKD80', choices=[('40', '40'), ('80', '80')], validators=[DataRequired()])
+    seat =  StringField('Seat', validators=[DataRequired()])
+    payment_method = SelectField('Payment methods', choices=[('credit_card', 'Credit Card'), ('debit_card', 'Debit Card'), ('paypal', 'PayPal')], validators=[DataRequired()])
+    cinema = SelectField('Cinema', choices=[('16', 'MOViE MOViE Pacific Place (Admiralty)'), ('20', 'MOViE MOViE Cityplaza (Taikoo Shing)'), ('14','B+ cinema apm (Kwun Tong)'), ('22','B+ cinema MOKO (Mong Kok East)'), ('10','CINEMATHEQUE'), ('5','MONGKOK'), ('12', 'PALACE ifc'), ('21','PREMIERE ELEMENTS'), ('3','TSUEN WAN'), ('6','KWAI FONG'), ('9','KINGSWOOD'), ('19', 'MY CINEMA YOHO MALL')], validators=[DataRequired()])
+    room =  SelectMultipleField('Room', choices=[('Room1', 'Room1'), ('Room2', 'Room2'), ('Room3', 'Room3'), ('Room4', 'Room4'), ('Room5', 'Room5')]) 
     submit = SubmitField('Book')
     
 class SocialForm(FlaskForm):

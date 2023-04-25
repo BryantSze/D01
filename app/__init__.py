@@ -1,7 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 from app.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -13,6 +13,7 @@ from flask_babel import Babel
 
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -55,8 +56,6 @@ if not app.debug:
 @babel.localeselector
 def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
-
-
 
 
 # You must keep the routes at the end.

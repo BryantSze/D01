@@ -1,12 +1,12 @@
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, g
+from flask import render_template, flash, redirect, url_for, request, session, g
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdForm, AdvertiseForm
-from app.models import User, Post, Booking ,Seat, Social, Ad
+from app.models import User, Post, Booking ,Seat, Social, Ad, Cinema
 from app.email import send_password_reset_email
 
 
@@ -198,21 +198,51 @@ def unfollow(username):
     flash(_('You are not following %(username)s.', username=username))
     return redirect(url_for('user', username=username))
 
-@app.route('/booking/<int:booking_id>', methods=['GET', 'POST'])
-def booking(booking_id):
-    booking = Booking.query.get_or_404(booking_id)
-    seats = Seat.query.filter_by(booking=booking).all()
-    if request.method == 'POST':
-        for seat in seats:
-            if seat.booked:
-                seat.booked = False
-        for seat_id in request.form.getlist('seats'):
-            seat = Seat.query.get(seat_id)
-            seat.booked = True
+@app.route('/room/<int:room_id>')
+def select_seats(room_id):
+    # display a list of available seats for the selected room
+    room = Room.query.get(room_id)
+    seats = Seat.query.filter_by(room_id=room_id, available=True).all()
+    return render_template('select_seats.html', room=room, seats=seats)
+
+
+@app.route('/book', methods=['GET', 'POST'])
+def book():
+    form = BookingForm(request.form)
+    if form.validate_on_submit():
+        # Query the database for the user
+        user = User.query.filter_by(username=form.username.data).first()
+        seat = Seat.query.get(form.seat.data)
+        cinema = Cinema.query.get(form.cinema.data)
+
+        booking = Booking(
+            movie=form.movie.data,
+            price=form.price.data,
+            payment_method=form.payment_method.data,
+            user=user,
+            seat=seat,
+            cinema=cinema
+        )
+        db.session.add(booking)
         db.session.commit()
-        flash('Seats booked successfully!')
-        return redirect(url_for('main_bp.booking', booking_id=booking.id))
-    return render_template('book.html.j2', booking=booking, seats=seats)
+
+        # Store the booking ID in the session
+        session['booking_id'] = booking.id
+
+        # Redirect to the success page after booking is successful
+        return redirect(url_for('success'))
+
+    return render_template('tickets.html.j2', title=_('Book'), form=form)
+
+@app.route('/success')
+def success():
+    # Retrieve the booking data from the session
+    booking_data = session.pop('booking_data', None)
+    if not booking_data:
+        # Redirect to the booking page if there is no booking data in the session
+        return redirect(url_for('book'))
+    return render_template('success.html.j2', booking_data=booking_data)
+
 
 
 
