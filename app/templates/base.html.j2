@@ -1,40 +1,169 @@
 {% extends 'bootstrap/base.html' %}
 {% block styles %}
-    {{ super() }}
-    <style>
-          .logo-row {
-              display: flex;
-              align-items: center;
-              margin-bottom: 20px;
-          }
-          .logo {
-              width: 25%;
-              margin-right: 20px;
-          }
-          .banner {
-              width: 75%;
-          }
-    </style>
+{{ super() }}
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+    .logo-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        width: 25%;
+        margin-right: 20px;
+    }
+
+    .banner {
+        width: 75%;
+    }
+
+    body {
+        font-family: Roboto;
+    }
+
+    footer {
+        background-color: #33383c;
+        padding: 10px 0px;
+    }
+
+    footer ul li {
+        padding: 5px 0px;
+    }
+
+    .aboutus span,
+    .contact span,
+    .social span {
+        color: #FFF;
+        font-weight: 800;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        display: block;
+        font-size: 20px;
+        letter-spacing: 3px;
+    }
+
+    .aboutus li p,
+    .contact li a,
+    .social li a {
+        color: #FFF;
+        letter-spacing: 2px;
+        text-decoration: none;
+        font-size: 15px;
+    }
+
+    .social li {
+        float: left;
+    }
+
+    .aboutus,
+    .contact,
+    .social {
+        list-style: none;
+    }
+
+    .fa {
+        color: #9c9c9c;
+        margin-right: 15px;
+        font-size: 30px;
+    }
+</style>
 {% endblock %}
 {% block navbar %}
-    <nav class="navbar navbar-default" style="background-color: rgb(126, 119, 119); color: rgb(255, 255, 255); border-color: #e7e7e7; border-top: 3px solid red;">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button"
-                        class="navbar-toggle collapsed"
-                        data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1"
-                        aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
+<nav class="navbar navbar-default" style="background-color: rgb(126, 119, 119);
+                color: rgb(255, 255, 255);
+                border-color: #e7e7e7;
+                border-top: 3px solid red">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{{ url_for('index') }}" style="color: white;"><span
+                            class="glyphicon glyphicon-home"></span>{{ _(' Home') }}</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_anonymous %}
+                <li>
+                    <a href="{{ url_for('login') }}" style="color: white;"><span
+                            class="glyphicon glyphicon-log-in"></span>{{ _(' Login') }}</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('register') }}" style="color: white;"><span
+                            class="glyphicon glyphicon-edit"></span>{{ _(' Register') }}</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{{ url_for('user', username=current_user.username) }}" style="color: white"><span
+                            class="glyphicon glyphicon-user"></span>{{ _(' Profile') }}</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('logout') }}" style="color: white;"><span
+                            class="glyphicon glyphicon-log-out"></span>{{ _(' Logout') }}</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}<div class="alert alert-info" role="alert">{{ message }}</div>{% endfor %}
+    {% endif %}
+    {% endwith %}
+    {# application content needs to be provided in the app_content block #}
+    <div class="logo-row">
+        <a href="{{ url_for('index') }}">
+            <img src="https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/promotions/cinemas-offers/images/broadway-circuit-logo.jpg"
+                alt="Logo" class="logo" style="width: 200px">
+        </a>
+        <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/MGK-728-x-90-GDN_26437d0fa5e23b.JPG"
+            alt="Banner" class="banner" style="flex-grow: 1;
+                        text-align: right">
+    </div>
+    {% block app_content %}{% endblock %}
+</div>
+{% block footer %}
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-4 col-xs-12">
+                <ul class="aboutus">
+                    <span>About Us</span>
                     <li>
-                        <a href="{{ url_for('index') }}" style="color: white;">{{ _('Home') }}</a>
+                        <p>
+                            Since the beginning of the 20th century, “Broadway” is known for its reputation as the
+                            birthplace for many famous art and entertainment performances such as musicals, dramas,
+                            operas and dancing, bringing the audience to a series of fabulous in stage entertainments.
+                        </p>
+                    </li>
+                    <li>
+                        <p>+852 2783-7004</p>
+                    </li>
+                    <li>
+                        <p>membership@cinema.com.hk</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <ul class="contact">
+                    <span>Contact</span>
+                    <li>
+                        <a href="#">Ticketing</a>
                     </li>
                     <li>
                         <a href="{{ url_for('create_social') }}" style="color: white;">{{ _('Social') }}</a>
@@ -43,53 +172,39 @@
                         <a href="{{ url_for('advertise') }}" style="color: white;">{{ _('Advertise') }}</a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    {% if current_user.is_anonymous %}
-                        <li>
-                            <a href="{{ url_for('login') }}" style="color: white;">{{ _('Login') }}</a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('register') }}" style="color: white;">{{ _('Register') }}</a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="{{ url_for('user', username=current_user.username) }}" style="color: white;">{{ _('Profile') }}</a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('logout') }}" style="color: white;">{{ _('Logout') }}</a>
-                        </li>
-                    {% endif %}
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                <ul class="social">
+                    <span>Social</span>
+                    <li>
+                        <a href="https://www.facebook.com/broadwaycircuit/"><i class="fa fa-facebook fa-4x"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/user/BwayPalaceAmc"><i class="fa fa-youtube fa-4x"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/broadway_circuit/"><i class="fa fa-instagram fa-4x"></i></a>
+                    </li>
+                    <li>
+                        <a
+                            href="https://play.google.com/store/apps/details?id=gd.com.client.broadway&amp;feature=search_result&amp;hl=en"><i
+                                class="fa fa-android fa-4x"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://itunes.apple.com/hk/app/ticketing-broadway-palace/id403690922?mt=8"><i
+                                class="fa fa-apple fa-4x"></i></a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </nav>
-{% endblock %}
-{% block content %}
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}<div class="alert alert-info" role="alert">{{ message }}</div>{% endfor %}
-            {% endif %}
-        {% endwith %}
-        {# application content needs to be provided in the app_content block #}
-        <div class="logo-row">
-            <a href="{{ url_for('index') }}">
-                <img src="https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/promotions/cinemas-offers/images/broadway-circuit-logo.jpg"
-                     alt="Logo"
-                     class="logo"
-                     style="width: 200px">
-            </a>
-            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/MGK-728-x-90-GDN_26437d0fa5e23b.JPG"
-                 alt="Banner"
-                 class="banner"
-                 style="flex-grow: 1;
-                        text-align: right">
-        </div>
-        {% block app_content %}{% endblock %}
     </div>
+</footer>
+{% endblock %}
 {% endblock %}
 {% block scripts %}
-    {{ super() }}
-    {{ moment.include_moment() }}
-    {{ moment. lang(g. locale) }}
+{{ super() }}
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+{{ moment.include_moment() }}
+{{ moment. lang(g. locale) }}
 {% endblock %}

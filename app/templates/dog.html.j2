@@ -1,0 +1,84 @@
+{% extends "base.html.j2" %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="movie-poster">
+      <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681274027.jpg" alt="Movie Poster">
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="movie-info">
+      <h1 class="movie-title">Hachiko</h1>
+
+    </div>
+      </div>
+    <table class="table">
+      <tbody>
+        <tr>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>播放YouTube</title>
+  </head>
+  <body>
+    {% set youtube_id = "dQw4w9WgXcQ" %}
+    {% set youtube_link = "https://www.youtube.com/watch?v=QrPyiBGD9nc&ab_channel=iQIYIDISTRIBUTION" + youtube_id %}
+
+    <button id="play-button">trailer</button>
+
+    <script>
+      var playButton = document.getElementById("play-button");
+      var youtubeLink = "{{ youtube_link }}";
+
+      playButton.addEventListener("click", function() {
+        window.open(youtubeLink, "_blank");
+      });
+    </script>
+  </body>
+</html>
+
+        </tr>
+
+        <button onclick="share()">Share to facebook</button>
+
+<script>
+  function share() {
+    var url = "{{ request.url }}";
+    var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+    window.open(shareUrl, "", "width=600,height=400");
+  }
+</script>
+
+<button onclick="copyUrl()">copyUrl</button>
+
+<script>
+  function copyUrl() {
+    var url = "{{ request.url }}";
+    var dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.setAttribute("id", "dummy_id");
+    document.getElementById("dummy_id").value = url;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    alert("已複製到剪貼板：" + url);
+  }
+</script>
+      </tbody>
+    </table>
+  </div>
+
+     
+      <p class="movie-duration">Time:125 minutes </p>
+      <p class="movie-release-date">20-04-2023</p>
+      <p class="movie-description">University associate professor Chen Jingxiu (played by Feng Xiaogang) met a lost puppy on the way out for inspection, secretly took it home and wanted to adopt it, but was strongly opposed by his wife Li Jiazhen (played by Chen Chong), even his children resisted! However, Chen Jingxiu insisted on letting the puppy become a member of the Chen family, and named it Batong, so that it gradually integrated into the ordinary and blessed family life, and the companionship day and night became each other's concern. Until one day, Chen Jingxiu went on a business trip as usual, but never came back again, so Batong also began to wait for his whole life—by waiting day after day, telling his loyalty and love...</p>
+     <p class="movie-director">Director: Xu Ang</p>
+      <p class="movie-cast">Actors: Feng Xiaogang, Chen Chong</p></div>
+  </div>
+</div>
+{% endblock %}
+
+{% import 'bootstrap/wtf.html' as wtf %}

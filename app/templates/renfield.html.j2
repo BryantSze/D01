@@ -1,0 +1,86 @@
+{% extends "base.html.j2" %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="movie-poster">
+      <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681188580.jpg" alt="Movie Poster">
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="movie-info">
+      <h1 class="movie-title">RENFIELD</h1>
+
+    </div>
+      </div>
+    <table class="table">
+      <tbody>
+        <tr>
+    <!DOCTYPE html>
+<html>
+  <head>
+    <title>播放YouTube</title>
+  </head>
+  <body>
+    {% set youtube_id = "dQw4w9WgXcQ" %}
+    {% set youtube_link = "https://www.youtube.com/watch?v=6LmO6rmDW08&t=1s&ab_channel=UniversalPictures" + youtube_id %}
+
+    <button id="play-button">Trailer</button>
+
+    <script>
+      var playButton = document.getElementById("play-button");
+      var youtubeLink = "{{ youtube_link }}";
+
+      playButton.addEventListener("click", function() {
+        window.open(youtubeLink, "_blank");
+      });
+    </script>
+  </body>
+</html>
+
+        </tr>
+
+        <button onclick="share()">Share to facebook</button>
+
+<script>
+  function share() {
+    var url = "{{ request.url }}";
+    var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+    window.open(shareUrl, "", "width=600,height=400");
+  }
+</script>
+
+<button onclick="copyUrl()">CopyUrl</button>
+
+<script>
+  function copyUrl() {
+    var url = "{{ request.url }}";
+    var dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.setAttribute("id", "dummy_id");
+    document.getElementById("dummy_id").value = url;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    alert("已複製到剪貼板：" + url);
+  }
+</script>
+      </tbody>
+    </table>
+  </div>
+
+     
+      <p class="movie-duration">Time:93 minutes </p>
+      <p class="movie-release-date">Release Date:  20-04-2023</p>
+      <p class="movie-description">Movie Description: In this modern monster tale of Dracula’s loyal servant, Nicholas Hoult (Mad Max: Fury Road, X-Men franchise) stars as Renfield, the tortured aide to history’s most narcissistic boss, Dracula (Oscar® winner Nicolas Cage). Renfield is forced to procure his master’s prey and do his every bidding, no matter how debased. But now, after centuries of servitude, Renfield is ready to see if there’s a life outside the shadow of The Prince of Darkness. If only he can figure out how to end his codependency. </p>
+     <p class="movie-director">Directed by Chris McKay</p>
+      <p class="movie-cast">Nicholas Hoult, Nicolas Cage, Awkwafina, Ben Schwartz, Adrian Martinez
+
+</p></div>
+  </div>
+</div>
+{% endblock %}
+
+{% import 'bootstrap/wtf.html' as wtf %}

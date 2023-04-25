@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    bookings = db.relationship('Booking', backref='user')
     followed = db.relationship(
         'User', secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
@@ -122,17 +123,14 @@ class Booking(db.Model):
     __tablename__ = 'booking'
     id = db.Column(db.Integer, primary_key=True)
     movie = db.Column(db.String(50), nullable=False)
-    time = db.Column(db.String(10), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'), nullable=False)
-    cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'), nullable=False)
-    
-
-
-    user = db.relationship('User', backref='bookings')
-    seat = db.relationship('Seat', backref='booking_history', foreign_keys=[seat_id])
+    payment_method = db.Column(db.String(30), nullable=False)
+    seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'))
     cinema = db.relationship('Cinema', backref='booking_history', foreign_keys=[cinema_id])
+    users = db.relationship('User', backref='booking', foreign_keys=[user_id])
+    seat = db.relationship('Seat', backref='booking_history', foreign_keys=[seat_id])
 
 
     def __repr__(self):
