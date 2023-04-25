@@ -1,0 +1,84 @@
+{% extends "base.html.j2" %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="movie-poster">
+      <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681274027.jpg" alt="Movie Poster">
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="movie-info">
+      <h1 class="movie-title">Hachiko</h1>
+
+    </div>
+      </div>
+    <table class="table">
+      <tbody>
+        <tr>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>播放YouTube</title>
+  </head>
+  <body>
+    {% set youtube_id = "dQw4w9WgXcQ" %}
+    {% set youtube_link = "https://www.youtube.com/watch?v=QrPyiBGD9nc&ab_channel=iQIYIDISTRIBUTION" + youtube_id %}
+
+    <button id="play-button">播放</button>
+
+    <script>
+      var playButton = document.getElementById("play-button");
+      var youtubeLink = "{{ youtube_link }}";
+
+      playButton.addEventListener("click", function() {
+        window.open(youtubeLink, "_blank");
+      });
+    </script>
+  </body>
+</html>
+
+        </tr>
+
+        <button onclick="share()">Share to facebook</button>
+
+<script>
+  function share() {
+    var url = "{{ request.url }}";
+    var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+    window.open(shareUrl, "", "width=600,height=400");
+  }
+</script>
+
+<button onclick="copyUrl()">copyUrl</button>
+
+<script>
+  function copyUrl() {
+    var url = "{{ request.url }}";
+    var dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.setAttribute("id", "dummy_id");
+    document.getElementById("dummy_id").value = url;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    alert("已複製到剪貼板：" + url);
+  }
+</script>
+      </tbody>
+    </table>
+  </div>
+
+     
+      <p class="movie-duration">Time:125 minutes </p>
+      <p class="movie-release-date">20-04-2023</p>
+      <p class="movie-description">大學副教授陳敬修（馮小剛飾）在外出考察的路上遇見走失了的幼犬，偷偷帶回家想將牠收養，卻遭到了妻子李佳珍（陳冲飾）的極力反對，連兒女也抗拒！陳敬修卻堅持要讓小狗成為陳家的一員，並為牠取名八筒，令牠日漸融入了平凡是福的家庭生活，日夕相伴更成為了彼此的牽掛。直到有一天，陳敬修像往常一樣出差，卻再也沒有回來，於是八筒也開始了一生的守候——用日復一日的等待，訴說自己的忠誠與愛……</p>
+     <p class="movie-director">導演:徐昂</p>
+      <p class="movie-cast">演員:馮小剛、陳沖</p></div>
+  </div>
+</div>
+{% endblock %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
