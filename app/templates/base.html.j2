@@ -81,6 +81,121 @@
         </div>
         {% block app_content %}{% endblock %}
     </div>
+    {% block footer %}
+    <footer style="background-color: rgb(184, 184, 184); color: rgb(255, 255, 255); border-color: #aca4a4; border-bottom: 3px solid red;"><div id="footer" class="hidden-xs" >
+		<div class="footer-container">
+			<div class="footer-col col-sm-2 hidden-xs link">
+            <div class="footer-item">
+            <a href="/tc/site/aboutus">
+                關於我們    	    </a>
+    	</div>
+            <div class="footer-item">
+            <a href="/tc/site/joinus">
+                加入我們    	    </a>
+    	</div>
+    	<div class="footer-item">
+        <a href="http://www.b-cinema.cn/home.jsp">
+            中國百老匯戲院	    </a>
+	</div>
+    </div>
+    <div class="footer-col col-sm-2 hidden-xs link">
+    <div class="footer-item">
+        <a href="/tc/membership/signup">
+            會員區	    </a>
+	</div>
+	<div class="footer-item">
+        <a href="/tc/member/forgetpassword">
+            忘記密碼	    </a>
+	</div>
+	        <div class="footer-item">
+            <a href="/tc/site/privacy">
+                個人私隱條款    	    </a>
+    	</div>
+            <div class="footer-item">
+            <a href="/tc/site/security">
+                交易安全條款    	    </a>
+    	</div>
+    </div>
+    <div class="footer-col col-sm-2 hidden-xs link">
+    <div class="footer-item">
+        <a href="/tc/movie/nowshowingMovieList">
+            即日 / 預售	    </a>
+	</div>
+    <div class="footer-item">
+        <a href="/tc/movie/upcoming">
+            即將上映	    </a>
+	</div>
+    <div class="footer-item">
+        <a href="/tc/movie/special">
+            特備節目	    </a>
+	</div>
+    </div>
+    <div class="footer-col col-sm-2 hidden-xs link">
+            <div class="footer-item">
+            <a href="/tc/site/ticketPrice" target="_blank">
+                門票資料    	    </a>
+    	</div>
+        <div class="footer-item">
+        <a href="/tc/giftcardshop/checkbalance">
+           禮蜜卡區	    </a>
+	</div>
+</div>
+<div class="footer-col col-sm-2 hidden-xs link">
+            <div class="footer-item">
+            <a href="/tc/site/advertise">
+                廣告查詢    	    </a>
+    	</div>
+            <div class="footer-item">
+            <a href="/tc/site/faq">
+                常見問題    	    </a>
+    	</div>
+            <div class="footer-item">
+            <a href="/tc/site/contactus">
+                聯絡我們    	    </a>
+    	</div>
+        <div class="footer-item">
+        <a href="/?site=mobile">
+           切換至手機版	    </a>
+	</div>
+    </div>
+    <div class="footer-col col-sm-2 hidden-xs">
+            <div class="footer-item">
+            追蹤我們        </div>
+        <div class="footer-item follow-us-row">
+                            <div class="footer-icon-container">
+                    <a class="footer-facebook-page-icon" target="_blank" href="https://www.facebook.com/broadwaycircuit/"></a>
+                </div>
+                            <div class="footer-icon-container">
+                    <a class="footer-youtube-page-icon" target="_blank" href="https://www.youtube.com/user/BwayPalaceAmc"></a>
+                </div>
+                            <div class="footer-icon-container">
+                    <a class="footer-instagram-page-icon" target="_blank" href="https://www.instagram.com/broadway_circuit/"></a>
+                </div>
+            
+                        <div class="clearfix"></div>
+        </div>
+        
+    
+            <div class="footer-item">
+            手機應用程式        </div>
+        <div class="footer-item mobile-apps-row">
+                            <div class="footer-icon-container">
+                    <a class="footer-android-app-icon" target="_blank" href="https://play.google.com/store/apps/details?id=gd.com.client.broadway&amp;feature=search_result&amp;hl=zh_TW"></a>
+                </div>
+                            <div class="footer-icon-container">
+                    <a class="footer-ios-app-icon" target="_blank" href="https://itunes.apple.com/hk/app/ticketing-broadway-palace/id403690922?mt=8"></a>
+                </div>
+                        <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>		</div>
+		<div class="browser-suggest-container">
+            本網頁建議以IE 11.0或以上版本及1280x960像素瀏覽，以取得最佳瀏覽效果。		</div>
+        <div class="copyright desktop">
+            © 2023 Cinema.com.hk Limited.        </div>
+	</div>
+   </footer>
+    {% endblock %}
 {% endblock %}
 {% block scripts %}
     {{ super() }}
