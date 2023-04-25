@@ -85,11 +85,12 @@ class SocialForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
 
-class AdForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()])
-    image_url = StringField('Image URL', validators=[DataRequired(), URL()])
-    submit = SubmitField('Create Ad')
+class ContactForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    subject = StringField('Subject', validators=[DataRequired()])
+    message = TextAreaField('Message', validators=[DataRequired()])
+    submit = SubmitField('Send')
 
 class AdvertiseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
