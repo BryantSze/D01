@@ -280,7 +280,6 @@ def cinema_details():
     website = 'https://www.cinema.com.hk'
     return render_template('Cinema Location.html.j2', address=address, phone=phone, email=email, website=website)
 
-
 @app.route('/ad/create', methods=['GET', 'POST'])
 def create_ad():
     form = AdForm()
@@ -336,6 +335,7 @@ def delete_social(id):
     social = Social.query.get_or_404(id)
     db.session.delete(social)
     db.session.commit()
+
     return redirect(url_for('index'))
 
 @app.route('/mario')
@@ -353,3 +353,4 @@ def dead():
 @app.route('/renfield')
 def renfield():
     return render_template('renfield.html.j2')
+
