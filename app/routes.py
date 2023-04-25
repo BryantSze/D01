@@ -5,8 +5,8 @@ from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdForm, AdvertiseForm
-from app.models import User, Post, Booking ,Seat, Social, Ad, Cinema
+    ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdvertiseForm, ContactForm
+from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact
 from app.email import send_password_reset_email
 
 
@@ -315,28 +315,16 @@ def create_social():
     return render_template('create_social.html.j2', form=form)
 
 
-@app.route('/social/<int:id>/edit', methods=['GET', 'POST'])
-def edit_social(id):
-    form = EditProfileForm(current_user.username)
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
     if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.about_me = form.about_me.data
+        contact = Contact(name=form.name.data, email=form.email.data, subject=form.subject.data, message=form.message.data)
+        db.session.add(contact)
         db.session.commit()
-        flash(_('Your changes have been saved.'))
-        return redirect(url_for('edit_profile'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.about_me.data = current_user.about_me
-    return render_template('edit_social.html.j2', form=form, social=social)
-
-
-@app.route('/social/<int:id>/delete', methods=['POST'])
-def delete_social(id):
-    social = Social.query.get_or_404(id)
-    db.session.delete(social)
-    db.session.commit()
-
-    return redirect(url_for('index'))
+        flash('Your message has been sent!', 'success')
+        return redirect(url_for('contact'))
+    return render_template('contactus.html.j2', form=form)
 
 @app.route('/mario')
 def mario():

@@ -1,0 +1,60 @@
+{% extends 'base.html.j2' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block content %}
+If you have any comment / enquiry about our website or cinemas, please contact us at the following channels. We will reply you as soon as possible. Thank you.<br>
+
+<strong style="color: rgb(245, 12, 12);">Cinema.com.hk Ltd</strong><br>
+Address: Cinema.com.hk Ltd, 1212, Tower II, Admiralty Center, 18 Harcourt Road, Hong Kong.<br>
+Tel: 2388-0002 (from 11:30am to 08:00pm everyday)<br>
+
+<strong style="color: rgb(245, 12, 12);">BC member's comments</strong><br>
+If you are a member of Broadway Cinematheque and would like to make comments on our services, please email to membership@cinema.com.hk. <br>
+Please be reminded to include your membership number so that we can follow your comments more efficiently. Or call bc member hotline 2783-7004 from 01:30pm to 10:00pm everyday.<br>
+Thank you.<br>
+
+<strong style="color: rgb(245, 12, 12);">MOViE MOViE member's comments</strong><br>
+If you are a member of MOViE MOViE and would like to make comments on our services, please email to membership@moviemovie.com.hk.<br>
+Please be reminded to include your membership number so that we can follow your comments more efficiently. Or call MOViE MOViE member hotline 2871-3600 from 11:30am to 08:00pm everyday.<br>
+ Thank you.
+  <h1>Contact Us</h1>
+  <form method="POST" action="{{ url_for('contact') }}">
+    {{ form.csrf_token }}
+    <div class="form-group">
+      {{ form.name.label }} {{ form.name(class="form-control") }}
+    </div>
+    <div class="form-group">
+      {{ form.email.label }} {{ form.email(class="form-control") }}
+    </div>
+    <div class="form-group">
+      {{ form.subject.label }} {{ form.subject(class="form-control") }}
+    </div>
+    <div class="form-group">
+      {{ form.message.label }} {{ form.message(class="form-control") }}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+  </form>
+<div style="color: rgb(245, 12, 12);" class="index-hotline-item">
+				<div style="font-size:20px" class="index-hotline-title">
+					Enquiry Hotline				</div>
+				<div style="font-size:20px" class="index-hotline-no">
+                                    23880002				</div>
+			</div>
+<div  style="color: rgb(245, 12, 12);" class="index-hotline-item">
+				<div style="font-size:20px" class="index-hotline-title">
+					PALACE Hotline				</div>
+				<div style="font-size:20px" class="index-hotline-no">
+                                    23886268				</div>
+			</div>
+<div style="color: rgb(245, 12, 12);"  class="index-hotline-item">
+				<div style="font-size:20px" class="index-hotline-title">
+					BC Member Hotline				</div>
+				<div style="font-size:20px" class="index-hotline-no">
+                                    27837004				</div>
+			</div>
+<div style="color: rgb(245, 12, 12);" class="index-hotline-item">
+				<div style="font-size:20px" class="index-hotline-title">
+					MOViE MOViE Member Hotline				</div>
+				<div style="font-size:20px" class="index-hotline-no">
+                                    28713600				</div>
+			</div>
+{% endblock %}
