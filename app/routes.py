@@ -338,3 +338,18 @@ def delete_social(id):
     db.session.commit()
     return redirect(url_for('index'))
 
+@app.route('/mario')
+def mario():
+    return render_template('mario.html.j2')
+
+@app.route('/dog')
+def dog():
+    return render_template('dog.html.j2')
+
+@app.route('/dead')
+def dead():
+    return render_template('dead.html.j2')
+
+@app.route('/renfield')
+def renfield():
+    return render_template('renfield.html.j2')
