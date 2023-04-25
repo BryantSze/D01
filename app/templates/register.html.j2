@@ -1,8 +1,14 @@
 {% extends "base.html.j2" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
-    <h1>{{ _('Register') }}</h1>
     <div class="row">
-        <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
+        <div class="col-md-8">
+            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/4de53d9a3e9e189067c21a0d6a79e5de_1679394119.jpg"
+                 alt="Cinema Image">
+        </div>
+        <div class="col-md-4">
+            <h1>{{ _('Register') }}</h1>
+            {{ wtf.quick_form(form) }}
+        </div>
     </div>
 {% endblock %}
