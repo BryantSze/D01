@@ -294,7 +294,6 @@ def create_ad():
 
 @app.route('/advertise', methods=['GET', 'POST'])
 def advertise():
-
     form = AdvertiseForm()
     if form.validate_on_submit():
         title = form.title.data
