@@ -31,7 +31,7 @@
             </td>
         </tr>
     </table>
-    {% for post in current_user.posts %}
+    {% for post in posts %}
         {% include 'post.html.j2' %}
     {% endfor %}
     <nav aria-label="...">
