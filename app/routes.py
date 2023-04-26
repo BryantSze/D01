@@ -5,8 +5,8 @@ from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdvertiseForm, ContactForm
-from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact
+    ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdvertiseForm, ContactForm, ConcessionForm
+from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact, Order, ConcessionItem
 from app.email import send_password_reset_email
 
 
@@ -258,10 +258,6 @@ def success():
     return render_template('success.html.j2', booking_data=booking_data)
 
 
-
-
-
-
 @app.route('/user/<username>')
 @login_required
 def profile(username):
@@ -316,6 +312,59 @@ def advertise():
         return render_template('advertise.html.j2', form=form, success=True)
     return render_template('advertise.html.j2', form=form)
 
+@app.route('/concession', methods=['GET', 'POST'])
+@login_required     
+def concession():
+    form = ConcessionForm(request.form)
+    if form.validate_on_submit():
+        # Create a new order for the current user
+        order = Order(user_id=current_user.id, status='pending')
+        db.session.add(order)
+        db.session.commit()
+
+        # Create concession items for the order
+        concession = ConcessionItem(
+            order_id=order.id,
+            popcorn=form.popcorn.data,
+            soda=form.soda.data,
+            hotdog=form.hotdog.data,
+            churros=form.churros.data
+        )
+        db.session.add(concession)
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        # Store the concession ID in the session
+        session['concession_id'] = concession.id
+
+        # Debug statement to print out form data
+        print('Form data:', form.popcorn.data, form.soda.data, form.hotdog.data, form.churros.data)
+
+        return redirect(url_for('concession_success', concession_id=concession.id))
+    
+    return render_template('concession.html.j2', title='Concession', form=form)
+
+ 
+@app.route('/concession/success/<int:concession_id>')
+@login_required
+def concession_success(concession_id):
+    concession = ConcessionItem.query.get(concession_id)
+    if not concession:
+        # Redirect to the concession page if there is no concession with the given ID
+        return redirect(url_for('concession'))
+
+    # Pass the concession item data to the template
+    concession_data = {
+        'popcorn': concession.popcorn,
+        'soda': concession.soda,
+        'hotdog': concession.hotdog,
+        'churros': concession.churros
+    }
+
+    # Create a new instance of the ConcessionForm and pass it to the template
+    form = ConcessionForm()
+    return render_template('concession_success.html.j2', concession_data=concession_data, form=form)
 
 @app.route('/social/create', methods=['GET', 'POST'])
 def create_social():

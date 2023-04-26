@@ -1,0 +1,30 @@
+{% extends "base.html.j2" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Concession Order</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.popcorn.label(class="form-label") }}
+            {{ form.popcorn(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.soda.label(class="form-label") }}
+            {{ form.soda(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.soda_taste.label(class="form-label") }}
+            {{ form.soda_taste(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.hotdog.label(class="form-label") }}
+            {{ form.hotdog(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.churros.label(class="form-label") }}
+            {{ form.churros(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
