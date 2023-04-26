@@ -101,6 +101,7 @@ class Room(db.Model):
     __tablename__ = 'room'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    bookings = db.relationship('Booking', backref='user')
 
     def __repr__(self):
         return '<Room %r>' % self.id
@@ -125,9 +126,12 @@ class Booking(db.Model):
     movie = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     payment_method = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(120), index=True, unique=True)
+    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'))
+    room = db.relationship('Room', backref='booking_history', foreign_keys=[room_id])
     cinema = db.relationship('Cinema', backref='booking_history', foreign_keys=[cinema_id])
     users = db.relationship('User', backref='booking', foreign_keys=[user_id])
     seat = db.relationship('Seat', backref='booking_history', foreign_keys=[seat_id])

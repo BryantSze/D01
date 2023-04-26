@@ -3,28 +3,14 @@
 
 {% block app_content %}
     <h1>Concession Order</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{ form.popcorn.label(class="form-label") }}
-            {{ form.popcorn(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.soda.label(class="form-label") }}
-            {{ form.soda(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.soda_taste.label(class="form-label") }}
-            {{ form.soda_taste(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.hotdog.label(class="form-label") }}
-            {{ form.hotdog(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.churros.label(class="form-label") }}
-            {{ form.churros(class="form-control") }}
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <h1 style="text-align: center;">Concession Order</h1>
+    <div class="row">
+      <div class="col-md-5"
+           style="font-size: 24px;
+                  text-align: center;
+                  justify-content: center;
+                  margin: auto;
+                  top: 30%;
+                  left: 30%">
+        {{ wtf.quick_form(form) }}
 {% endblock %}

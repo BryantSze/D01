@@ -215,14 +215,17 @@ def book():
         user = User.query.filter_by(username=form.username.data).first()
         seat = Seat.query.get(form.seat.data)
         cinema = Cinema.query.get(form.cinema.data)
+        room = Room.query.get(form.room.data)
 
         booking = Booking(
             movie=form.movie.data,
+            email=form.email.data,
             price=form.price.data,
             payment_method=form.payment_method.data,
             user=user,
             seat=seat,
-            cinema=cinema
+            cinema=cinema,
+            room=room
         )
         db.session.add(booking)
         db.session.commit()
@@ -248,11 +251,14 @@ def success():
     booking = Booking.query.get(booking_id)
     booking_data = {
         'movie': booking.movie ,
+        'email': booking.email,
         'price': booking.price,
         'payment_method': booking.payment_method,
         'user': booking.user.username if booking.user else 'User',
-        'seat': booking.seat.seat if booking.seat else 'A1',
-        'cinema': booking.cinema.cinema if booking.cinema else 'MOViE MOViE Pacific Place (Admiralty)'
+        'seat': booking.seat.seat if booking.seat else '11',
+        'cinema': booking.cinema.cinema if booking.cinema else '1',
+        'room': booking.room.room if booking.room else '1',
+        
     }
 
     return render_template('success.html.j2', booking_data=booking_data)
