@@ -294,7 +294,6 @@ def create_ad():
 
 @app.route('/advertise', methods=['GET', 'POST'])
 def advertise():
-
     form = AdvertiseForm()
     if form.validate_on_submit():
         title = form.title.data
@@ -342,3 +341,11 @@ def dead():
 def renfield():
     return render_template('renfield.html.j2')
 
+
+@app.route('/killer')
+def killer():
+    return render_template('killer.html.j2')
+
+@app.route('/dayoff')
+def dayoff():
+    return render_template('dayoff.html.j2')
