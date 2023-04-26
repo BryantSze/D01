@@ -92,6 +92,15 @@
                     <a href="{{ url_for('index') }}" style="color: white;"><span
                             class="glyphicon glyphicon-home"></span>{{ _(' Home') }}</a>
                 </li>
+                <li>
+                    <a href="{{ url_for('create_social') }}" style="color: white;"> {{ _(' Social') }}</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('advertise') }}" style="color: white;">{{ _(' Advertise') }}</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('contact') }}" style="color: white;">{{ _(' contactus') }}</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_anonymous %}
@@ -164,6 +173,12 @@
                     <span>Contact</span>
                     <li>
                         <a href="#">Ticketing</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('create_social') }}" style="color: white;">{{ _('Social') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('advertise') }}" style="color: white;">{{ _('Advertise') }}</a>
                     </li>
                 </ul>
             </div>
