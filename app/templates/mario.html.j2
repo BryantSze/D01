@@ -1,0 +1,72 @@
+{% extends "base.html.j2" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+  <div class="row">
+    <div class="col-md-3">
+      <div class="movie-poster">
+        <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1680241471.jpg"
+             alt="Movie Poster">
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="movie-info">
+        <h1 class="movie-title">THE SUPER MARIO BROS. MOVIE</h1>
+      </div>
+    </div>
+    <table class="table">
+      <tbody>
+        <tr>
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>播放YouTube</title>
+            </head>
+            <body>
+              {% set youtube_id = "dQw4w9WgXcQ" %}
+              {% set youtube_link = "https://www.youtube.com/watch?v=TnGl01FkMMo&t=1s&ab_channel=Illumination" + youtube_id %}
+              <button id="play-button">Trailer</button>
+              <script>
+      var playButton = document.getElementById("play-button");
+      var youtubeLink = "{{ youtube_link }}";
+
+      playButton.addEventListener("click", function() {
+        window.open(youtubeLink, "_blank");
+      });
+              </script>
+            </body>
+          </html>
+        </tr>
+        <button onclick="share()">Share to facebook</button>
+        <script>
+  function share() {
+    var url = "{{ request.url }}";
+    var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+    window.open(shareUrl, "", "width=600,height=400");
+  }
+        </script>
+        <button onclick="copyUrl()">CopyUrl</button>
+        <script>
+  function copyUrl() {
+    var url = "{{ request.url }}";
+    var dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.setAttribute("id", "dummy_id");
+    document.getElementById("dummy_id").value = url;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    alert("已複製到剪貼板：" + url);
+  }
+        </script>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p class="movie-duration">Time:92 minutes</p>
+<p class="movie-release-date">Release Date: January 1, 2022</p>
+<p class="movie-description">
+  Movie Description: From Nintendo and Illumination comes a new animated film based on the world of Super Mario Bros.
+  Directed by Aaron Horvath and Michael Jelenic (collaborators on Teen Titans Go!, Teen Titans Go! To the Movies) from a screenplay by Matthew Fogel (The LEGO Movie 2: The Second Part, Minions: The Rise of Gru), the film stars Chris Pratt as Mario, Anya Taylor-Joy as Princess Peach, Charlie Day as Luigi, Jack Black as Bowser, Keegan-Michael Key as Toad, Seth Rogen as Donkey Kong, Fred Armisen as Cranky Kong, Kevin Michael Richardson as Kamek and Sebastian Maniscalco as Spike.
+</p>
+<p class="movie-director">Directed by Aaron Horvath, Michael Jelenic</p>
+{% endblock %}
