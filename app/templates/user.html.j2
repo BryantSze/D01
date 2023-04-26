@@ -16,6 +16,9 @@
                     <p>
                         <a href="{{ url_for('edit_profile') }}">{{ _('Edit your profile') }}</a>
                     </p>
+                    <p>
+                <a href="{{ url_for('post') }}">{{ _('What is you mind?') }}</a>
+            </p>
                 {% elif not current_user.is_following(user) %}
                     <p>
                         <a href="{{ url_for('follow', username=user.username) }}">{{ _('Follow') }}</a>
@@ -28,7 +31,7 @@
             </td>
         </tr>
     </table>
-    {% for post in posts %}
+    {% for post in current_user.posts %}
         {% include 'post.html.j2' %}
     {% endfor %}
     <nav aria-label="...">
@@ -45,10 +48,13 @@
             </li>
         </ul>
         <h3>Links</h3>
-      <ul class="list-group">
-        <li class="list-group-item"><a href="https://www.facebook.com/broadwaycircuit/">facebook</a></li>
-        <li class="list-group-item"><a href="https://www.instagram.com/broadwaycinematheque/">instagram</a></li>
-      </ul>
-      
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="https://www.facebook.com/broadwaycircuit/">facebook</a>
+            </li>
+            <li class="list-group-item">
+                <a href="https://www.instagram.com/broadwaycinematheque/">instagram</a>
+            </li>
+        </ul>
     </nav>
 {% endblock %}

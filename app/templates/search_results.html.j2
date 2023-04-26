@@ -1,0 +1,25 @@
+{% extends 'base.html.j2' %}
+
+{% block app_content %}
+<h1>{{ title }}</h1>
+{% if users %}
+<ul>
+    {% for user in users %}
+    <li>
+        <a href="{{ url_for('user', username=user.username) }}">{{ user.username }}</a>
+        {% if not current_user.is_following(user) %}
+        <p>
+            <a href="{{ url_for('follow', username=user.username) }}">{{ _('Follow') }}</a>
+        </p>
+        {% else %}
+        <p>
+            <a href="{{ url_for('unfollow', username=user.username) }}">{{ _('Unfollow') }}</a>
+        </p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>{{ _('No users found.') }}</p>
+{% endif %}
+{% endblock %}
