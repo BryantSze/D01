@@ -22,56 +22,56 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-9 " id="ticketing">
-                                <!-- Add your ticketing content here -->
-                                <div class="panel-body">
-    <div class="col-md-4">
-        <a href="{{ url_for('mario') }}">
-            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1680241471.jpg"
-                 alt="mario">
-        </a>
-    </div>
-    <div class="col-md-4">
-        <a href="{{ url_for('dog') }}">
-            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681274027.jpg"
-                 alt="dog">
-        </a>
-    </div>
-    <div class="col-md-4">
-        <a href="{{ url_for('dead') }}">
-            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1678354734.jpg"
-                 alt="dead">
-        </a>
-    </div>
-</div>
-<div class="panel-body">
-    <div class="col-md-4">
-        <a href="{{ url_for('renfield') }}">
-            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681188580.jpg"
-                 alt="renfield">
-        </a>
-    </div>
-    <div class="col-md-4">
-        <a href="{{ url_for('killer') }}">
-            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681194147.jpg"
-                 alt="killer">
-        </a>
-    </div>
-    <div class="col-md-4">
-        <a href="{{ url_for('dayoff') }}">
-            <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681184812.jpg"
-                 alt="dayoff">
-        </a>
-    </div>
-</div>
-                                <!-- Add your booking content here -->
-                                <li>
-                                    <a href="{{ url_for('book') }}" style="color: #000000;">Click it to booking</a>
-                                </li>
+                    <div class="panel-body" id="ticketing">
+                        <!-- Add your ticketing content here -->
+                        <div class="panel-body">
+                            <div class="col-md-4">
+                                <a href="{{ url_for('mario') }}">
+                                    <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1680241471.jpg"
+                                         alt="mario">
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="{{ url_for('dog') }}">
+                                    <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681274027.jpg"
+                                         alt="dog">
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="{{ url_for('dead') }}">
+                                    <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1678354734.jpg"
+                                         alt="dead">
+                                </a>
                             </div>
                         </div>
+                        <div class="panel-body">
+                            <div class="col-md-4">
+                                <a href="{{ url_for('renfield') }}">
+                                    <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681188580.jpg"
+                                         alt="renfield">
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="{{ url_for('killer') }}">
+                                    <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681194147.jpg"
+                                         alt="killer">
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="{{ url_for('dayoff') }}">
+                                    <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681184812.jpg"
+                                         alt="dayoff">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="booking" style="display:none;">
+                        
+                            <!-- Add your booking content here -->
+                            <li>
+                                <a href="{{ url_for('book') }}" style="color: #000000;">Click it to booking</a>
+                            </li>
+                        
                     </div>
                 </div>
             </div>
@@ -223,13 +223,13 @@
 function togglePanel(panelId) {
     var ticketingPanel = document.getElementById('ticketing');
     var bookingPanel = document.getElementById('booking');
-    
     if (panelId === 'ticketing') {
         ticketingPanel.style.display = 'block';
         bookingPanel.style.display = 'none';
     } else if (panelId === 'booking') {
         ticketingPanel.style.display = 'none';
         bookingPanel.style.display = 'block';
+        
     }
 }
     </script>

@@ -5,8 +5,8 @@ from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdvertiseForm, ContactForm
-from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact
+    ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdvertiseForm, ContactForm, ConcessionForm
+from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact, Order, ConcessionItem
 from app.email import send_password_reset_email
 
 
@@ -19,20 +19,23 @@ def before_request():
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
+@login_required
 def home():
-    form = BookingForm()
+    form = PostForm()
     if form.validate_on_submit():
-        booking = Booking(movie=form.movie.data, time=form.time.data, price=form.price.data)
-        db.session.add(booking)
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
         db.session.commit()
-        for row in range(1, 11):
-            for number in range(1, 11):
-                seat = Seat(row=row, number=number, booking=booking)
-                db.session.add(seat)
-        db.session.commit()
-        flash('Booking created successfully!')
-        return redirect(url_for('main_bp.index'))
-    return render_template('index.html.j2', form=form)
+        flash(_('Your post is now live!'))
+        return redirect(url_for('home'))
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
+    next_url = url_for('home', page=posts.next_num) if posts.next_num else None
+    prev_url = url_for('home', page=posts.prev_num) if posts.prev_num else None
+    return render_template('home.html.j2', title=_('Home'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
 
 
 @app.route('/index', methods=['GET', 'POST'])
@@ -198,12 +201,10 @@ def unfollow(username):
     flash(_('You are not following %(username)s.', username=username))
     return redirect(url_for('user', username=username))
 
-@app.route('/room/<int:room_id>')
-def select_seats(room_id):
+@app.route('/seatplan')
+def seatplan():
     # display a list of available seats for the selected room
-    room = Room.query.get(room_id)
-    seats = Seat.query.filter_by(room_id=room_id, available=True).all()
-    return render_template('select_seats.html', room=room, seats=seats)
+    return render_template('seatplan.html.j2')
 
 
 @app.route('/book', methods=['GET', 'POST'])
@@ -234,18 +235,27 @@ def book():
 
     return render_template('tickets.html.j2', title=_('Book'), form=form)
 
+
 @app.route('/success')
 def success():
-    # Retrieve the booking data from the session
-    booking_data = session.pop('booking_data', None)
-    if not booking_data:
-        # Redirect to the booking page if there is no booking data in the session
+    # Retrieve the booking ID from the session
+    booking_id = session.pop('booking_id', None)
+    if not booking_id:
+        # Redirect to the booking page if there is no booking ID in the session
         return redirect(url_for('book'))
+
+    # Retrieve the booking data from the database
+    booking = Booking.query.get(booking_id)
+    booking_data = {
+        'movie': booking.movie ,
+        'price': booking.price,
+        'payment_method': booking.payment_method,
+        'user': booking.user.username if booking.user else 'User',
+        'seat': booking.seat.seat if booking.seat else 'A1',
+        'cinema': booking.cinema.cinema if booking.cinema else 'MOViE MOViE Pacific Place (Admiralty)'
+    }
+
     return render_template('success.html.j2', booking_data=booking_data)
-
-
-
-
 
 
 @app.route('/user/<username>')
@@ -302,6 +312,59 @@ def advertise():
         return render_template('advertise.html.j2', form=form, success=True)
     return render_template('advertise.html.j2', form=form)
 
+@app.route('/concession', methods=['GET', 'POST'])
+@login_required     
+def concession():
+    form = ConcessionForm(request.form)
+    if form.validate_on_submit():
+        # Create a new order for the current user
+        order = Order(user_id=current_user.id, status='pending')
+        db.session.add(order)
+        db.session.commit()
+
+        # Create concession items for the order
+        concession = ConcessionItem(
+            order_id=order.id,
+            popcorn=form.popcorn.data,
+            soda=form.soda.data,
+            hotdog=form.hotdog.data,
+            churros=form.churros.data
+        )
+        db.session.add(concession)
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        # Store the concession ID in the session
+        session['concession_id'] = concession.id
+
+        # Debug statement to print out form data
+        print('Form data:', form.popcorn.data, form.soda.data, form.hotdog.data, form.churros.data)
+
+        return redirect(url_for('concession_success', concession_id=concession.id))
+    
+    return render_template('concession.html.j2', title='Concession', form=form)
+
+ 
+@app.route('/concession/success/<int:concession_id>')
+@login_required
+def concession_success(concession_id):
+    concession = ConcessionItem.query.get(concession_id)
+    if not concession:
+        # Redirect to the concession page if there is no concession with the given ID
+        return redirect(url_for('concession'))
+
+    # Pass the concession item data to the template
+    concession_data = {
+        'popcorn': concession.popcorn,
+        'soda': concession.soda,
+        'hotdog': concession.hotdog,
+        'churros': concession.churros
+    }
+
+    # Create a new instance of the ConcessionForm and pass it to the template
+    form = ConcessionForm()
+    return render_template('concession_success.html.j2', concession_data=concession_data, form=form)
 
 @app.route('/social/create', methods=['GET', 'POST'])
 def create_social():
