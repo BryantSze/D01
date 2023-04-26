@@ -341,3 +341,11 @@ def dead():
 def renfield():
     return render_template('renfield.html.j2')
 
+
+@app.route('/killer')
+def killer():
+    return render_template('killer.html.j2')
+
+@app.route('/dayoff')
+def dayoff():
+    return render_template('dayoff.html.j2')

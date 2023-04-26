@@ -1,0 +1,72 @@
+{% extends "base.html.j2" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+  <div class="row">
+    <div class="col-md-3">
+      <div class="movie-poster">
+        <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681184812.jpg"
+             alt="Movie Poster">
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="movie-info">
+        <h1 class="movie-title">Day off</h1>
+      </div>
+    </div>
+    <table class="table">
+      <tbody>
+        <tr>
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>播放YouTube</title>
+            </head>
+            <body>
+              {% set youtube_id = "dQw4w9WgXcQ" %}
+              {% set youtube_link = "https://www.youtube.com/watch?v=R5nTWZ8zYqQ" + youtube_id %}
+              <button id="play-button">Trailer</button>
+              <script>
+      var playButton = document.getElementById("play-button");
+      var youtubeLink = "{{ youtube_link }}";
+
+      playButton.addEventListener("click", function() {
+        window.open(youtubeLink, "_blank");
+      });
+              </script>
+            </body>
+          </html>
+        </tr>
+        <button onclick="share()">Share to facebook</button>
+        <script>
+  function share() {
+    var url = "{{ request.url }}";
+    var shareUrl = "https://www.youtube.com/watch?v=IM4oXmlDX7Y" + encodeURIComponent(url);
+    window.open(shareUrl, "", "width=600,height=400");
+  }
+        </script>
+        <button onclick="copyUrl()">CopyUrl</button>
+        <script>
+  function copyUrl() {
+    var url = "{{ request.url }}";
+    var dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.setAttribute("id", "dummy_id");
+    document.getElementById("dummy_id").value = url;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    alert("已複製到剪貼板：" + url);
+  }
+        </script>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p class="movie-duration">Time:106 minutes</p>
+<p class="movie-release-date">Release Date: January 5, 2023</p>
+<p class="movie-description">
+  For forty years A-Rui has been running a barbershop, a small place where she has seen happiness and sorrow, ebb and flow. Faced with all the troubles in her life, A-Rui fully commits to her work and defeat is never an option for her, but her children never appreciate it and treat her profession with disdain. One day, A-Rui receives a phone call from the family of an old regular client who moved far away a long time ago. The family asks A-Rui if she would be willing to travel to cut the hair for the bedridden old man. Reminded of what her master taught her, “Always provide your best service,” A-Rui decides to hang up the “Day Off” sign and closes her shop for one day. She drives her beat-up old car and embarks on a long journey to do something others think is not worthwhile.
+</p>
+<p class="movie-director">Directed by FU Tien-yu</p>
+<p class="movie-Cast">Cast by 	LU Hsiao-fen, FU Meng-po, SHIH Ming-shuai, Annie CHEN, FANG Chih-yu, Bolin CHEN, Austin LIN</p>
+{% endblock %}
