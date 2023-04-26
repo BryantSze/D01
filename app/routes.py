@@ -247,9 +247,9 @@ def success():
         'movie': booking.movie ,
         'price': booking.price,
         'payment_method': booking.payment_method,
-        'user': booking.user.username if booking.user else 'Unknown User',
-        'seat': booking.seat.name if booking.seat else 'Unknown Seat',
-        'cinema': booking.cinema.name if booking.cinema else 'Unknown Cinema'
+        'user': booking.user.username if booking.user else 'User',
+        'seat': booking.seat.seat if booking.seat else 'A1',
+        'cinema': booking.cinema.cinema if booking.cinema else 'MOViE MOViE Pacific Place (Admiralty)'
     }
 
     return render_template('success.html.j2', booking_data=booking_data)
