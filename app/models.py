@@ -157,22 +157,37 @@ class Showtime(db.Model):
 class ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
+class Advertise(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    Content = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return f'<Advertise {self.title}>'
+
 class Social(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return f"Social('{self.title}', '{self.date_posted}')"
 
-class Ad(db.Model):
+class Contact(db.Model):
+    __tablename__ = "contact"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    image_url = db.Column(db.String(200), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    subject = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return f'<Ad {self.title}>'
+        return f"ContactMessage('{self.name}', '{self.email}', '{self.subject}')"
     

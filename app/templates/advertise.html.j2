@@ -1,0 +1,27 @@
+{% extends 'base.html.j2' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+  <div class="container">
+    <h1>advertise</h1>
+    <form method="POST">
+      {{ form.csrf_token }}
+      <div class="form-group">
+        {{ form.title.label }}
+        {{ form.title(class='form-control', placeholder='Enter an ad title') }}
+      </div>
+      <div class="form-group">
+        {{ form.content.label }}
+        {{ form.content(class='form-control', placeholder='Enter ad content') }}
+      </div>
+      <div class="form-group">
+        {{ form.image.label }}
+        {{ form.image(class='form-control-file') }}
+      </div>
+      <button type="submit" class="btn btn-primary">submit</button>
+    </form>
+  </div>
+   <a href="https://www1.citibank.com.hk/english/credit-cards/promotions/broadway-cinema?icid=HKLPU7ZENCPLPCB03" target="_blank"><img alt="" src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/22-804-CIT_Broadway_729x90 (2).gif" style="width: 729px; height: 90px;"></a><br>
+   <a href="https://orderonline.foodcloud.hk/m5001/b0001/sov01/modeta?outlet=000&amp;show=list"><img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/kiosk-300-3(1)_2639bda700e510.jpeg" style="width: 220px; height: 56px;"></a><br>
+   <a href="http://bc.cinema.com.hk/" target="_blank"><img alt="" src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/Sidebanner_5.jpg" style="width: 220px; height: 58px;"></a><br>
+   <a href="http://www.kubrick.com.hk/index.php/en_us" target="_blank"><img alt="" src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/webcms/images/Sidebanner_6.jpg" style="width: 220px; height: 58px;"></a>
+{% endblock %}

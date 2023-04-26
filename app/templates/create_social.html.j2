@@ -1,0 +1,13 @@
+{% extends 'base.html.j2' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+<h1>Create Social Post</h1>
+<form method="POST" action="{{ url_for('create_social') }}">
+    {{ form.csrf_token }}
+    {{ form.title.label }} {{ form.title() }}
+    {{ form.content.label }} {{ form.content() }}
+    <button type="submit">Create</button>
+</form>
+<div id="facebookDiv" class="fb-like-box fb_iframe_widget" data-href="https://www.facebook.com/broadwaycircuit/" data-width="500" data-height="700" data-colorscheme="light" data-small-header="true" data-show-facepile="false" data-show-faces="false" data-header="true" data-stream="true" data-show-border="true" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=135473501975&amp;color_scheme=light&amp;container_width=750&amp;header=true&amp;height=700&amp;href=https%3A%2F%2Fwww.facebook.com%2Fbroadwaycircuit%2F&amp;id=facebookDiv&amp;locale=zh_HK&amp;sdk=joey&amp;show_border=true&amp;show_faces=false&amp;stream=true&amp;width=500"><span style="vertical-align: bottom; width: 500px; height: 700px;"><iframe name="f7f5538740bca4" width="500px" height="700px" data-testid="fb:like_box Facebook Social Plugin" title="fb:like_box Facebook Social Plugin" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" src="https://www.facebook.com/v4.0/plugins/like_box.php?app_id=135473501975&amp;channel=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df20dbe2d78bc2e8%26domain%3Dwww.cinema.com.hk%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fwww.cinema.com.hk%252Ff36c9d3ffdd4654%26relation%3Dparent.parent&amp;color_scheme=light&amp;container_width=750&amp;header=true&amp;height=700&amp;href=https%3A%2F%2Fwww.facebook.com%2Fbroadwaycircuit%2F&amp;id=facebookDiv&amp;locale=zh_HK&amp;sdk=joey&amp;show_border=true&amp;show_faces=false&amp;stream=true&amp;width=500" style="border: none; visibility: visible; width: 500px; height: 700px;" class=""></iframe></span></div>
+<a href="https://www.instagram.com/broadwaycinematheque/"><img src="https://scontent.fhkg10-1.fna.fbcdn.net/v/t39.30808-6/343083185_960628505361750_93575076788119094_n.jpg?stp=dst-jpg_p526x296&_nc_cat=111&ccb=1-7&_nc_sid=730e14&_nc_ohc=ByIyreYqLwsAX9_ZQod&_nc_ht=scontent.fhkg10-1.fna&oh=00_AfAcwKI2dfLsyf4NV7GVYKNWFBK2uF90aGpibzALCg8TVw&oe=644C558C"></a>
+{% endblock %}
