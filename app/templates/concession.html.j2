@@ -1,0 +1,16 @@
+{% extends "base.html.j2" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Concession Order</h1>
+    <h1 style="text-align: center;">Concession Order</h1>
+    <div class="row">
+      <div class="col-md-5"
+           style="font-size: 24px;
+                  text-align: center;
+                  justify-content: center;
+                  margin: auto;
+                  top: 30%;
+                  left: 30%">
+        {{ wtf.quick_form(form) }}
+{% endblock %}

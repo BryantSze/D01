@@ -101,6 +101,8 @@ class Room(db.Model):
     __tablename__ = 'room'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    
+    bookings = db.relationship('Booking', backref='booking_room')
 
     def __repr__(self):
         return '<Room %r>' % self.id
@@ -125,9 +127,12 @@ class Booking(db.Model):
     movie = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     payment_method = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(120), index=True, unique=True)
+    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'))
+    room = db.relationship('Room', backref='booking_history', foreign_keys=[room_id])
     cinema = db.relationship('Cinema', backref='booking_history', foreign_keys=[cinema_id])
     users = db.relationship('User', backref='booking', foreign_keys=[user_id])
     seat = db.relationship('Seat', backref='booking_history', foreign_keys=[seat_id])
@@ -191,3 +196,26 @@ class Contact(db.Model):
     def __repr__(self):
         return f"ContactMessage('{self.name}', '{self.email}', '{self.subject}')"
     
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.String(20), nullable=False, default='pending')
+
+    user = db.relationship('User', backref='orders')
+
+    concession_items = db.relationship('ConcessionItem', backref='order')
+
+    def __repr__(self):
+        return '<Order {}>'.format(self.id)
+
+
+class ConcessionItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
+    popcorn = db.Column(db.String(50))
+    soda = db.Column(db.String(50))
+    hotdog = db.Column(db.String(50))
+    churros = db.Column(db.String(50))
+  
+def __repr__(self):
+    return '<ConcessionItem id={}>'.format(self.id)

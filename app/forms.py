@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField, FileField,  SelectField, DateField, TimeField, EmailField , SelectMultipleField
+    TextAreaField, FileField,  SelectField, DateField, TimeField, EmailField , SelectMultipleField, IntegerField, validators
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length, URL
 from flask_babel import _, lazy_gettext as _l
@@ -73,11 +73,11 @@ class BookingForm(FlaskForm):
     email = EmailField('Email', validators=[DataRequired()])
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
     movie = SelectField('Movie', choices=[('THE SUPER MARIO BROS. MOVIE', 'THE SUPER MARIO BROS. MOVIE'), ('Hachiko', 'Hachiko'), ('Over My Dead Body', 'Over My Dead Body'), ('RENFIELD', 'RENFIELD'), ('TO CATCH A KILLER', 'TO CATCH A KILLER'), ('Day off', 'Day off')], validators=[DataRequired()])
-    price = SelectField('Price Special Tickets HKD40 Normal Tickets HKD80', choices=[('40', '40'), ('80', '80')], validators=[DataRequired()])
-    seat =  StringField('Seat', validators=[DataRequired()])
+    price = SelectField('Price', choices=[('40', '40'), ('80', '80')], validators=[DataRequired()])
+    seat =  IntegerField('Seat ID', validators=[DataRequired()])
     payment_method = SelectField('Payment methods', choices=[('credit_card', 'Credit Card'), ('debit_card', 'Debit Card'), ('paypal', 'PayPal')], validators=[DataRequired()])
-    cinema = SelectField('Cinema', choices=[('16', 'MOViE MOViE Pacific Place (Admiralty)'), ('20', 'MOViE MOViE Cityplaza (Taikoo Shing)'), ('14','B+ cinema apm (Kwun Tong)'), ('22','B+ cinema MOKO (Mong Kok East)'), ('10','CINEMATHEQUE'), ('5','MONGKOK'), ('12', 'PALACE ifc'), ('21','PREMIERE ELEMENTS'), ('3','TSUEN WAN'), ('6','KWAI FONG'), ('9','KINGSWOOD'), ('19', 'MY CINEMA YOHO MALL')], validators=[DataRequired()])
-    room =  SelectMultipleField('Room', choices=[('Room1', 'Room1'), ('Room2', 'Room2'), ('Room3', 'Room3'), ('Room4', 'Room4'), ('Room5', 'Room5')]) 
+    cinema = SelectField('Cinema ID', choices=[('16', '16'), ('20', '20'), ('14','14'), ('22','22'), ('10','10'), ('5','5'), ('12', '12'), ('21','21'), ('3','3'), ('6','6'), ('9','9'), ('19', '19')], validators=[DataRequired()])
+    room =  SelectMultipleField('Room', choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')]) 
     submit = SubmitField('Book')
     
 class SocialForm(FlaskForm):
@@ -96,3 +96,15 @@ class AdvertiseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     image = FileField('Image', validators=[DataRequired()])
+
+class ConcessionForm(FlaskForm):
+    popcorn = SelectField('Popcorn', choices=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')],
+                          validators=[DataRequired()])
+    soda = SelectField('Soda', choices=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')],
+                       validators=[DataRequired()])
+    soda_taste = SelectField('Soda Taste', choices=[('cola', 'cola'), ('sprite', 'sprite'), ('cream', 'cream'), ('sarsi', 'sarsi'), ('cream milk', 'cream milk')],
+                       validators=[DataRequired()])
+    hotdog = IntegerField('hotdog', validators=[DataRequired(), validators.NumberRange(min=0, max=10)])
+    churros = IntegerField('churros', validators=[DataRequired(), validators.NumberRange(min=0, max=10)])
+    submit = SubmitField('ConcessionItem')
+
