@@ -1,0 +1,29 @@
+{% extends "base.html.j2" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+    <h1>{{ _('Success') }}</h1>
+    <br/>
+    <p>You have successfully ordered the popcorn "{{form.popcorn.data}}"!</p>
+    <br/>
+    <p>You have successfully ordered the drink "{{ form.soda.data }}"!</p>
+    <br/>
+    <p>You have successfully ordered the drink "{{ form.soda_taste.data }}"!</p>
+    <br/>
+    <p>You have successfully ordered the hotdog "{{ form.hotdog.data }}"!</p>
+    <br/>
+    <p>You have successfully ordered the churros= "{{ form.churros.data }}"!</p>
+    <br/>
+    <p>
+        {{ _('New User?') }} <a href="{{ url_for('register') }}">{{ _('Click to Register!') }}</a>
+    </p>
+    <p>
+        {{ _('Login') }}
+        <a href="{{ url_for('login') }}">{{ _('Click to Reset It') }}</a>
+    </p>
+    <p>
+        {{ _('HOME') }}
+        <a href="{{ url_for('index') }}">{{ _('Click to Reset It') }}</a>
+    </p>
+
+    
+{% endblock %}

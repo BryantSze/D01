@@ -191,3 +191,26 @@ class Contact(db.Model):
     def __repr__(self):
         return f"ContactMessage('{self.name}', '{self.email}', '{self.subject}')"
     
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.String(20), nullable=False, default='pending')
+
+    user = db.relationship('User', backref='orders')
+
+    concession_items = db.relationship('ConcessionItem', backref='order')
+
+    def __repr__(self):
+        return '<Order {}>'.format(self.id)
+
+
+class ConcessionItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
+    popcorn = db.Column(db.String(50))
+    soda = db.Column(db.String(50))
+    hotdog = db.Column(db.String(50))
+    churros = db.Column(db.String(50))
+  
+def __repr__(self):
+    return '<ConcessionItem id={}>'.format(self.id)

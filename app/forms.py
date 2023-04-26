@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField, FileField,  SelectField, DateField, TimeField, EmailField , SelectMultipleField
+    TextAreaField, FileField,  SelectField, DateField, TimeField, EmailField , SelectMultipleField, IntegerField, validators
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length, URL
 from flask_babel import _, lazy_gettext as _l
@@ -96,3 +96,15 @@ class AdvertiseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
     image = FileField('Image', validators=[DataRequired()])
+
+class ConcessionForm(FlaskForm):
+    popcorn = SelectField('Popcorn', choices=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')],
+                          validators=[DataRequired()])
+    soda = SelectField('Soda', choices=[('small', 'Small'), ('medium', 'Medium'), ('large', 'Large')],
+                       validators=[DataRequired()])
+    soda_taste = SelectField('Soda Taste', choices=[('cola', 'cola'), ('sprite', 'sprite'), ('cream', 'cream'), ('sarsi', 'sarsi'), ('cream milk', 'cream milk')],
+                       validators=[DataRequired()])
+    hotdog = IntegerField('hotdog', validators=[DataRequired(), validators.NumberRange(min=0, max=10)])
+    churros = IntegerField('churros', validators=[DataRequired(), validators.NumberRange(min=0, max=10)])
+    submit = SubmitField('ConcessionItem')
+
