@@ -95,6 +95,10 @@
                 <li>
                     <a href="{{ url_for('create_social') }}" style="color: white;"> {{ _(' Social') }}</a>
                 </li>
+                <li>	
+                    <a href="{{ url_for('forum') }}" style="color: white;"><span	
+                            class="glyphicon glyphicon-comment"></span>{{ _(' Forum') }}</a>	
+                </li>
                 <li>
                     <a href="{{ url_for('advertise') }}" style="color: white;">{{ _(' Advertise') }}</a>
                 </li>
@@ -102,14 +106,12 @@
                     <a href="{{ url_for('contact') }}" style="color: white;">{{ _(' contactus') }}</a>
                 </li>
                 <li>
-                    <a href="{{ url_for('home') }}" style="color: white;">{{ _(' post ') }}</a>
-                </li>
-                <li>
                     <a href="{{ url_for('concession') }}" style="color: white;">{{ _(' order ') }}</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_anonymous %}
+                
                 <li>
                     <a href="{{ url_for('login') }}" style="color: white;"><span
                             class="glyphicon glyphicon-log-in"></span>{{ _(' Login') }}</a>
@@ -119,6 +121,10 @@
                             class="glyphicon glyphicon-edit"></span>{{ _(' Register') }}</a>
                 </li>
                 {% else %}
+                <li>	
+                    <a href="{{ url_for('search') }}" style="color: white"><span	
+                            class="glyphicon glyphicon-search"></span>{{ _(' Search') }}</a>	
+                </li>
                 <li>
                     <a href="{{ url_for('user', username=current_user.username) }}" style="color: white"><span
                             class="glyphicon glyphicon-user"></span>{{ _(' Profile') }}</a>

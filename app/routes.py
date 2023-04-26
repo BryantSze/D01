@@ -5,8 +5,8 @@ from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdvertiseForm, ContactForm, ConcessionForm
-from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact, Order, ConcessionItem, Room
+    ResetPasswordRequestForm, ResetPasswordForm, BookingForm,SearchForm, SocialForm, AdvertiseForm, ContactForm, ConcessionForm
+from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact, Order, ConcessionItem, Room, Search, Forum
 from app.email import send_password_reset_email
 
 
@@ -16,26 +16,6 @@ def before_request():
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
     g.locale = str(get_locale())
-
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/home', methods=['GET', 'POST'])
-@login_required
-def home():
-    form = PostForm()
-    if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user)
-        db.session.add(post)
-        db.session.commit()
-        flash(_('Your post is now live!'))
-        return redirect(url_for('home'))
-    page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
-        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
-    next_url = url_for('home', page=posts.next_num) if posts.next_num else None
-    prev_url = url_for('home', page=posts.prev_num) if posts.prev_num else None
-    return render_template('home.html.j2', title=_('Home'), form=form,
-                           posts=posts.items, next_url=next_url,
-                           prev_url=prev_url)
 
 
 @app.route('/index', methods=['GET', 'POST'])
@@ -418,3 +398,56 @@ def killer():
 @app.route('/dayoff')
 def dayoff():
     return render_template('dayoff.html.j2')
+
+@app.route('/post', methods=['GET', 'POST'])	
+@login_required	
+def post():	
+    form = PostForm()	
+    if form.validate_on_submit():	
+        post = Post(body=form.post.data, author=current_user)	
+        db.session.add(post)	
+        db.session.commit()	
+        flash(_('Your post is now live!'))	
+        return redirect(url_for('post'))	
+    page = request.args.get('page', 1, type=int)	
+    posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.timestamp.desc()).paginate(	
+        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)	
+    next_url = url_for('post', page=posts.next_num) if posts.next_num else None	
+    prev_url = url_for('post', page=posts.prev_num) if posts.prev_num else None	
+    return render_template('posting.html.j2', title=_('Post'), form=form,	
+                           posts=posts.items, next_url=next_url,	
+                           prev_url=prev_url)	
+@app.route('/search', methods=['GET', 'POST'])	
+@login_required	
+def search():	
+    form = SearchForm()	
+    if form.validate_on_submit():	
+        # Query the User model for users whose username contains the search query	
+        users = User.query.filter(	
+            User.username.contains(form.userID.data)).all()	
+        for user in users:	
+            search = Search(user_id=current_user.id, result_id=user.id)	
+            db.session.add(search)	
+        db.session.commit()	
+        return render_template('search_results.html.j2', title=_('Search Results'), users=users)	
+    return render_template('search.html.j2', title=_('Search'), form=form)	
+@app.route('/', methods=['GET', 'POST'])	
+@app.route('/forum', methods=['GET', 'POST'])	
+def forum():	
+    form = PostForm()	
+    if form.validate_on_submit():	
+        post = Post(body=form.post.data, author=current_user)	
+        db.session.add(post)	
+        db.session.commit()	
+        flash(_('Your post is now live!'))	
+        return redirect(url_for('forum'))	
+    page = request.args.get('page', 1, type=int)	
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(	
+        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)	
+    next_url = url_for(	
+        'forum', page=posts.next_num) if posts.next_num else None	
+    prev_url = url_for(	
+        'forum', page=posts.prev_num) if posts.prev_num else None	
+    return render_template('forum.html.j2', title=_('forum'), form=form,	
+                           posts=posts.items, next_url=next_url,	
+                           prev_url=prev_url)	
