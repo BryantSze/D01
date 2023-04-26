@@ -198,12 +198,10 @@ def unfollow(username):
     flash(_('You are not following %(username)s.', username=username))
     return redirect(url_for('user', username=username))
 
-@app.route('/room/<int:room_id>')
-def select_seats(room_id):
+@app.route('/seatplan')
+def seatplan():
     # display a list of available seats for the selected room
-    room = Room.query.get(room_id)
-    seats = Seat.query.filter_by(room_id=room_id, available=True).all()
-    return render_template('select_seats.html', room=room, seats=seats)
+    return render_template('seatplan.html.j2')
 
 
 @app.route('/book', methods=['GET', 'POST'])
@@ -234,13 +232,26 @@ def book():
 
     return render_template('tickets.html.j2', title=_('Book'), form=form)
 
+
 @app.route('/success')
 def success():
-    # Retrieve the booking data from the session
-    booking_data = session.pop('booking_data', None)
-    if not booking_data:
-        # Redirect to the booking page if there is no booking data in the session
+    # Retrieve the booking ID from the session
+    booking_id = session.pop('booking_id', None)
+    if not booking_id:
+        # Redirect to the booking page if there is no booking ID in the session
         return redirect(url_for('book'))
+
+    # Retrieve the booking data from the database
+    booking = Booking.query.get(booking_id)
+    booking_data = {
+        'movie': booking.movie ,
+        'price': booking.price,
+        'payment_method': booking.payment_method,
+        'user': booking.user.username if booking.user else 'Unknown User',
+        'seat': booking.seat.name if booking.seat else 'Unknown Seat',
+        'cinema': booking.cinema.name if booking.cinema else 'Unknown Cinema'
+    }
+
     return render_template('success.html.j2', booking_data=booking_data)
 
 
