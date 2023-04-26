@@ -1,0 +1,72 @@
+{% extends "base.html.j2" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+  <div class="row">
+    <div class="col-md-3">
+      <div class="movie-poster">
+        <img src="https://mediafiles.cinema.com.hk/broadway/cmsimg/cinweb/movie/movie_1681194147.jpg"
+             alt="Movie Poster">
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="movie-info">
+        <h1 class="movie-title">TO CATCH A KILLER</h1>
+      </div>
+    </div>
+    <table class="table">
+      <tbody>
+        <tr>
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>播放YouTube</title>
+            </head>
+            <body>
+              {% set youtube_id = "dQw4w9WgXcQ" %}
+              {% set youtube_link = "https://www.youtube.com/watch?v=R5nTWZ8zYqQ" + youtube_id %}
+              <button id="play-button">Trailer</button>
+              <script>
+      var playButton = document.getElementById("play-button");
+      var youtubeLink = "{{ youtube_link }}";
+
+      playButton.addEventListener("click", function() {
+        window.open(youtubeLink, "_blank");
+      });
+              </script>
+            </body>
+          </html>
+        </tr>
+        <button onclick="share()">Share to facebook</button>
+        <script>
+  function share() {
+    var url = "{{ request.url }}";
+    var shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+    window.open(shareUrl, "", "width=600,height=400");
+  }
+        </script>
+        <button onclick="copyUrl()">CopyUrl</button>
+        <script>
+  function copyUrl() {
+    var url = "{{ request.url }}";
+    var dummy = document.createElement("input");
+    document.body.appendChild(dummy);
+    dummy.setAttribute("id", "dummy_id");
+    document.getElementById("dummy_id").value = url;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+    alert("已複製到剪貼板：" + url);
+  }
+        </script>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p class="movie-duration">Time:119 minutes</p>
+<p class="movie-release-date">Release Date: January 27, 2023</p>
+<p class="movie-description">
+  Eleanor (Woodley) is a modern-day Clarice Starling, a young investigator wrestling with the demons of her past, when she’s called to the scene of a brutal crime—the work of a new and terrifying mass murderer. The police and FBI launch a desperate nationwide manhunt but are thwarted at every turn by the killer’s enigmatic, unprecedented behavior. Despite her relative inexperience, Eleanor is drawn deeper and deeper into the case, as she and her colleagues realize that she may be the only person, given her own tortured psyche, who can understand the mind of this singular killer and bring him to justice.
+</p>
+<p class="movie-director">Directed by Damian Szifron</p>
+<p class="movie-Cast">Cast by Shailene Woodley, Ben Mendelsohn </p>
+{% endblock %}
