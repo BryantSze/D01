@@ -6,7 +6,7 @@ from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdvertiseForm, ContactForm, ConcessionForm
-from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact, Order, ConcessionItem
+from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact, Order, ConcessionItem, Room
 from app.email import send_password_reset_email
 
 
@@ -222,11 +222,11 @@ def book():
             email=form.email.data,
             price=form.price.data,
             payment_method=form.payment_method.data,
+            room=room,
             user=user,
             seat=seat,
-            cinema=cinema,
-            room=room
-        )
+            cinema=cinema
+            )
         db.session.add(booking)
         db.session.commit()
 
@@ -254,10 +254,10 @@ def success():
         'email': booking.email,
         'price': booking.price,
         'payment_method': booking.payment_method,
+        'room': booking.room.room if booking.cinema else '1',
         'user': booking.user.username if booking.user else 'User',
         'seat': booking.seat.seat if booking.seat else '11',
-        'cinema': booking.cinema.cinema if booking.cinema else '1',
-        'room': booking.room.room if booking.room else '1',
+        'cinema': booking.cinema.cinema if booking.cinema else '1'
         
     }
 
