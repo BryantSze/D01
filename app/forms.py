@@ -72,7 +72,7 @@ class BookingForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
     email = EmailField('Email', validators=[DataRequired()])
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
-    movie = SelectField('Movie', choices=[('mario', 'mario'), ('kiko', 'kiko'), ('omg', 'omg')], validators=[DataRequired()])
+    movie = SelectField('Movie', choices=[('THE SUPER MARIO BROS. MOVIE', 'THE SUPER MARIO BROS. MOVIE'), ('Hachiko', 'Hachiko'), ('Over My Dead Body', 'Over My Dead Body'), ('RENFIELD', 'RENFIELD'), ('TO CATCH A KILLER', 'TO CATCH A KILLER'), ('Day off', 'Day off')], validators=[DataRequired()])
     price = SelectField('Price Special Tickets HKD40 Normal Tickets HKD80', choices=[('40', '40'), ('80', '80')], validators=[DataRequired()])
     seat =  StringField('Seat', validators=[DataRequired()])
     payment_method = SelectField('Payment methods', choices=[('credit_card', 'Credit Card'), ('debit_card', 'Debit Card'), ('paypal', 'PayPal')], validators=[DataRequired()])
