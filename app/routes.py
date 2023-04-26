@@ -19,20 +19,25 @@ def before_request():
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
+@login_required
 def home():
-    form = BookingForm()
+    form = PostForm()
     if form.validate_on_submit():
-        booking = Booking(movie=form.movie.data, time=form.time.data, price=form.price.data)
-        db.session.add(booking)
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
         db.session.commit()
-        for row in range(1, 11):
-            for number in range(1, 11):
-                seat = Seat(row=row, number=number, booking=booking)
-                db.session.add(seat)
-        db.session.commit()
-        flash('Booking created successfully!')
-        return redirect(url_for('main_bp.index'))
-    return render_template('index.html.j2', form=form)
+        flash(_('Your post is now live!'))
+        return redirect(url_for('home'))
+    page = request.args.get('page', 1, type=int)
+    posts = current_user.followed_posts().paginate(
+        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
+    next_url = url_for(
+        'home', page=posts.next_num) if posts.next_num else None
+    prev_url = url_for(
+        'home', page=posts.prev_num) if posts.prev_num else None
+    return render_template('home.html.j2', title=_('Home'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
 
 
 @app.route('/index', methods=['GET', 'POST'])
