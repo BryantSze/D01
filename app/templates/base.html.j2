@@ -101,6 +101,9 @@
                 <li>
                     <a href="{{ url_for('contact') }}" style="color: white;">{{ _(' contactus') }}</a>
                 </li>
+                <li>
+                    <a href="{{ url_for('home') }}" style="color: white;">{{ _(' post ') }}</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_anonymous %}
