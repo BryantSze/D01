@@ -29,12 +29,10 @@ def home():
         flash(_('Your post is now live!'))
         return redirect(url_for('home'))
     page = request.args.get('page', 1, type=int)
-    posts = current_user.followed_posts().paginate(
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
         page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
-    next_url = url_for(
-        'home', page=posts.next_num) if posts.next_num else None
-    prev_url = url_for(
-        'home', page=posts.prev_num) if posts.prev_num else None
+    next_url = url_for('home', page=posts.next_num) if posts.next_num else None
+    prev_url = url_for('home', page=posts.prev_num) if posts.prev_num else None
     return render_template('home.html.j2', title=_('Home'), form=form,
                            posts=posts.items, next_url=next_url,
                            prev_url=prev_url)
