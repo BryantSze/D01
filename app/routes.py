@@ -205,6 +205,7 @@ def book():
             user=user,
             seat=seat,
             cinema=cinema
+            
         )
         db.session.add(booking)
         db.session.commit()
@@ -302,7 +303,6 @@ def advertise():
         return render_template('advertise.html.j2', form=form, success=True)
     return render_template('advertise.html.j2', form=form)
 
-
 @app.route('/concession', methods=['GET', 'POST'])
 @login_required
 def concession():
@@ -318,6 +318,7 @@ def concession():
             order_id=order.id,
             popcorn=form.popcorn.data,
             soda=form.soda.data,
+            soda_taste=form.soda_taste.data,
             hotdog=form.hotdog.data,
             churros=form.churros.data
         )
@@ -330,32 +331,40 @@ def concession():
         session['concession_id'] = concession.id
 
         # Debug statement to print out form data
-        print('Form data:', form.popcorn.data, form.soda.data,
-              form.hotdog.data, form.churros.data)
+        # 检索所有 ConcessionItem 数据
+        concessions = ConcessionItem.query.all()
 
-        return redirect(url_for('concession_success', concession_id=concession.id))
+# 打印数据
+        for concession in concessions:
+            print(concession.id, concession.popcorn, concession.soda, concession.hotdog, concession.churros)
+
+        return redirect(url_for('concession_success'))
 
     return render_template('concession.html.j2', title='Concession', form=form)
 
 
-@app.route('/concession/success/<int:concession_id>')
+@app.route('/concession_success')
 @login_required
-def concession_success(concession_id):
-    concession = ConcessionItem.query.get(concession_id)
-    if not concession:
-        # Redirect to the concession page if there is no concession with the given ID
+def concession_success():
+    form = ConcessionForm()
+    concession_id = session.pop('concession_id', None)
+
+    if not concession_id:
         return redirect(url_for('concession'))
 
-    # Pass the concession item data to the template
+    concession = ConcessionItem.query.get(concession_id)
+
+    if not concession:
+        return redirect(url_for('concession'))
+
     concession_data = {
         'popcorn': concession.popcorn,
         'soda': concession.soda,
+        'soda_taste': concession.soda_taste,
         'hotdog': concession.hotdog,
         'churros': concession.churros
     }
 
-    # Create a new instance of the ConcessionForm and pass it to the template
-    form = ConcessionForm()
     return render_template('concession_success.html.j2', concession_data=concession_data, form=form)
 
 

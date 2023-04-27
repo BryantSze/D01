@@ -223,6 +223,7 @@ class ConcessionItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
     popcorn = db.Column(db.String(50))
+    soda_taste = db.Column(db.String(50))
     soda = db.Column(db.String(50))
     hotdog = db.Column(db.String(50))
     churros = db.Column(db.String(50))
