@@ -5,10 +5,9 @@ from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SocialForm, AdvertiseForm, ContactForm
-from app.models import User, Post, Booking ,Seat, Social, Cinema, Contact
+    ResetPasswordRequestForm, ResetPasswordForm, BookingForm, SearchForm, SocialForm, AdvertiseForm, ContactForm, ConcessionForm
+from app.models import User, Post, Booking, Seat, Social, Cinema, Contact, Order, ConcessionItem, Room, Search, Forum
 from app.email import send_password_reset_email
-
 
 @app.before_request
 def before_request():
@@ -17,24 +16,8 @@ def before_request():
         db.session.commit()
     g.locale = str(get_locale())
 
+
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/home', methods=['GET', 'POST'])
-def home():
-    form = BookingForm()
-    if form.validate_on_submit():
-        booking = Booking(movie=form.movie.data, time=form.time.data, price=form.price.data)
-        db.session.add(booking)
-        db.session.commit()
-        for row in range(1, 11):
-            for number in range(1, 11):
-                seat = Seat(row=row, number=number, booking=booking)
-                db.session.add(seat)
-        db.session.commit()
-        flash('Booking created successfully!')
-        return redirect(url_for('main_bp.index'))
-    return render_template('index.html.j2', form=form)
-
-
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     page = request.args.get('page', 1, type=int)
@@ -44,7 +27,7 @@ def index():
         'index', page=posts.next_num) if posts.next_num else None
     prev_url = url_for(
         'index', page=posts.prev_num) if posts.prev_num else None
-    return render_template('index.html.j2', title=('home'),
+    return render_template('index.html.j2', title=('Home'),
                            posts=posts.items, next_url=next_url,
                            prev_url=prev_url)
 
@@ -140,12 +123,10 @@ def reset_password(token):
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    posts = user.followed_posts().paginate(
+    posts = Post.query.filter_by(user_id=user.id).order_by(Post.timestamp.desc()).paginate(
         page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
-    next_url = url_for(
-        'index', page=posts.next_num) if posts.next_num else None
-    prev_url = url_for(
-        'index', page=posts.prev_num) if posts.prev_num else None
+    next_url = url_for('user', username=username, page=posts.next_num) if posts.has_next else None
+    prev_url = url_for('user', username=username, page=posts.prev_num) if posts.has_prev else None
     return render_template('user.html.j2', user=user, posts=posts.items,
                            next_url=next_url, prev_url=prev_url)
 
@@ -198,12 +179,11 @@ def unfollow(username):
     flash(_('You are not following %(username)s.', username=username))
     return redirect(url_for('user', username=username))
 
-@app.route('/room/<int:room_id>')
-def select_seats(room_id):
+
+@app.route('/seatplan')
+def seatplan():
     # display a list of available seats for the selected room
-    room = Room.query.get(room_id)
-    seats = Seat.query.filter_by(room_id=room_id, available=True).all()
-    return render_template('select_seats.html', room=room, seats=seats)
+    return render_template('seatplan.html.j2')
 
 
 @app.route('/book', methods=['GET', 'POST'])
@@ -214,11 +194,14 @@ def book():
         user = User.query.filter_by(username=form.username.data).first()
         seat = Seat.query.get(form.seat.data)
         cinema = Cinema.query.get(form.cinema.data)
+        room = Room.query.get(form.room.data)
 
         booking = Booking(
             movie=form.movie.data,
+            email=form.email.data,
             price=form.price.data,
             payment_method=form.payment_method.data,
+            room=room,
             user=user,
             seat=seat,
             cinema=cinema
@@ -234,18 +217,30 @@ def book():
 
     return render_template('tickets.html.j2', title=_('Book'), form=form)
 
+
 @app.route('/success')
 def success():
-    # Retrieve the booking data from the session
-    booking_data = session.pop('booking_data', None)
-    if not booking_data:
-        # Redirect to the booking page if there is no booking data in the session
+    # Retrieve the booking ID from the session
+    booking_id = session.pop('booking_id', None)
+    if not booking_id:
+        # Redirect to the booking page if there is no booking ID in the session
         return redirect(url_for('book'))
+
+    # Retrieve the booking data from the database
+    booking = Booking.query.get(booking_id)
+    booking_data = {
+        'movie': booking.movie,
+        'email': booking.email,
+        'price': booking.price,
+        'payment_method': booking.payment_method,
+        'room': booking.room.room if booking.cinema else '1',
+        'user': booking.user.username if booking.user else 'User',
+        'seat': booking.seat.seat if booking.seat else '11',
+        'cinema': booking.cinema.cinema if booking.cinema else '1'
+
+    }
+
     return render_template('success.html.j2', booking_data=booking_data)
-
-
-
-
 
 
 @app.route('/user/<username>')
@@ -257,10 +252,12 @@ def profile(username):
         {'author': user, 'body': 'Test post #2'}
     ]
     return render_template('user.html.j2', user=user, posts=posts)
-    
+
+
 @app.route('/cinema')
 def cinema_location():
     return render_template('Cinema Location.html.j2')
+
 
 @app.route('/<region>/cinemas/<int:cinemasid>')
 def cinemas(region, cinemasid):
@@ -268,7 +265,8 @@ def cinemas(region, cinemasid):
     # ...
 
     # Render the template for the specified cinema and region
-    template_path = 'Cinemas/{region}/cinemasid={cinemasid}.html.j2'.format(region=region, cinemasid=cinemasid)
+    template_path = 'Cinemas/{region}/cinemasid={cinemasid}.html.j2'.format(
+        region=region, cinemasid=cinemasid)
     return render_template(template_path)
 
 
@@ -280,11 +278,13 @@ def cinema_details():
     website = 'https://www.cinema.com.hk'
     return render_template('Cinema Location.html.j2', address=address, phone=phone, email=email, website=website)
 
+
 @app.route('/ad/create', methods=['GET', 'POST'])
 def create_ad():
     form = AdForm()
     if form.validate_on_submit():
-        ad = Ad(title=form.title.data, description=form.description.data, image_url=form.image_url.data)
+        ad = Ad(title=form.title.data, description=form.description.data,
+                image_url=form.image_url.data)
         db.session.add(ad)
         db.session.commit()
         ads = Ad.query.order_by(Ad.created_at.desc()).all()
@@ -303,6 +303,62 @@ def advertise():
     return render_template('advertise.html.j2', form=form)
 
 
+@app.route('/concession', methods=['GET', 'POST'])
+@login_required
+def concession():
+    form = ConcessionForm(request.form)
+    if form.validate_on_submit():
+        # Create a new order for the current user
+        order = Order(user_id=current_user.id, status='pending')
+        db.session.add(order)
+        db.session.commit()
+
+        # Create concession items for the order
+        concession = ConcessionItem(
+            order_id=order.id,
+            popcorn=form.popcorn.data,
+            soda=form.soda.data,
+            hotdog=form.hotdog.data,
+            churros=form.churros.data
+        )
+        db.session.add(concession)
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        # Store the concession ID in the session
+        session['concession_id'] = concession.id
+
+        # Debug statement to print out form data
+        print('Form data:', form.popcorn.data, form.soda.data,
+              form.hotdog.data, form.churros.data)
+
+        return redirect(url_for('concession_success', concession_id=concession.id))
+
+    return render_template('concession.html.j2', title='Concession', form=form)
+
+
+@app.route('/concession/success/<int:concession_id>')
+@login_required
+def concession_success(concession_id):
+    concession = ConcessionItem.query.get(concession_id)
+    if not concession:
+        # Redirect to the concession page if there is no concession with the given ID
+        return redirect(url_for('concession'))
+
+    # Pass the concession item data to the template
+    concession_data = {
+        'popcorn': concession.popcorn,
+        'soda': concession.soda,
+        'hotdog': concession.hotdog,
+        'churros': concession.churros
+    }
+
+    # Create a new instance of the ConcessionForm and pass it to the template
+    form = ConcessionForm()
+    return render_template('concession_success.html.j2', concession_data=concession_data, form=form)
+
+
 @app.route('/social/create', methods=['GET', 'POST'])
 def create_social():
     form = SocialForm()
@@ -318,24 +374,29 @@ def create_social():
 def contact():
     form = ContactForm()
     if form.validate_on_submit():
-        contact = Contact(name=form.name.data, email=form.email.data, subject=form.subject.data, message=form.message.data)
+        contact = Contact(name=form.name.data, email=form.email.data,
+                          subject=form.subject.data, message=form.message.data)
         db.session.add(contact)
         db.session.commit()
         flash('Your message has been sent!', 'success')
         return redirect(url_for('contact'))
     return render_template('contactus.html.j2', form=form)
 
+
 @app.route('/mario')
 def mario():
     return render_template('mario.html.j2')
+
 
 @app.route('/dog')
 def dog():
     return render_template('dog.html.j2')
 
+
 @app.route('/dead')
 def dead():
     return render_template('dead.html.j2')
+
 
 @app.route('/renfield')
 def renfield():
@@ -346,6 +407,64 @@ def renfield():
 def killer():
     return render_template('killer.html.j2')
 
+
 @app.route('/dayoff')
 def dayoff():
     return render_template('dayoff.html.j2')
+
+
+@app.route('/post', methods=['GET', 'POST'])
+@login_required
+def post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash(_('Your post is now live!'))
+        return redirect(url_for('post'))
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
+    next_url = url_for('post', page=posts.next_num) if posts.next_num else None
+    prev_url = url_for('post', page=posts.prev_num) if posts.prev_num else None
+    return render_template('posting.html.j2', title=_('Post'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        # Query the User model for users whose username contains the search query
+        users = User.query.filter(
+            User.username.contains(form.userID.data)).all()
+        for user in users:
+            search = Search(user_id=current_user.id, result_id=user.id)
+            db.session.add(search)
+        db.session.commit()
+        return render_template('search_results.html.j2', title=_('Search Results'), users=users)
+    return render_template('search.html.j2', title=_('Search'), form=form)
+
+
+@app.route('/forum', methods=['GET', 'POST'])
+def forum():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash(_('Your post is now live!'))
+        return redirect(url_for('forum'))
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
+    next_url = url_for(
+        'forum', page=posts.next_num) if posts.next_num else None
+    prev_url = url_for(
+        'forum', page=posts.prev_num) if posts.prev_num else None
+    return render_template('forum.html.j2', title=_('Forum'), form=form,
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
