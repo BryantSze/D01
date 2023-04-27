@@ -83,12 +83,13 @@ def load_user(id):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    body = db.Column(db.String(140))
+    
     def __repr__(self):
         return f'<Post {self.body}>'
+
 
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -102,8 +103,11 @@ class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
 
+    bookings = db.relationship('Booking', backref='booking_room')
+
     def __repr__(self):
         return '<Room %r>' % self.id
+
 
 class Seat(db.Model):
     __tablename__ = 'seat'
@@ -117,7 +121,7 @@ class Seat(db.Model):
 
     def __repr__(self):
         return '<Seat %r>' % self.id
-    
+
 
 class Booking(db.Model):
     __tablename__ = 'booking'
@@ -125,16 +129,22 @@ class Booking(db.Model):
     movie = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     payment_method = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(120), index=True, unique=True)
+    room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'))
-    cinema = db.relationship('Cinema', backref='booking_history', foreign_keys=[cinema_id])
+    room = db.relationship(
+        'Room', backref='booking_history', foreign_keys=[room_id])
+    cinema = db.relationship(
+        'Cinema', backref='booking_history', foreign_keys=[cinema_id])
     users = db.relationship('User', backref='booking', foreign_keys=[user_id])
-    seat = db.relationship('Seat', backref='booking_history', foreign_keys=[seat_id])
-
+    seat = db.relationship(
+        'Seat', backref='booking_history', foreign_keys=[seat_id])
 
     def __repr__(self):
         return '<Booking %r>' % self.id
+
 
 class Cinema(db.Model):
     __tablename__ = 'cinema'
@@ -143,7 +153,6 @@ class Cinema(db.Model):
     location = db.Column(db.String(100), nullable=False)
     bookings = db.relationship("Booking", back_populates="cinema")
     parent_cinema_id = db.Column(db.Integer, db.ForeignKey('cinema.id'))
-    
 
 
 class Showtime(db.Model):
@@ -157,6 +166,7 @@ class Showtime(db.Model):
 class ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
+
 class Advertise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -168,15 +178,18 @@ class Advertise(db.Model):
     def __repr__(self):
         return f'<Advertise {self.title}>'
 
+
 class Social(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_posted = db.Column(db.DateTime, nullable=False,
+                            default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return f"Social('{self.title}', '{self.date_posted}')"
+
 
 class Contact(db.Model):
     __tablename__ = "contact"
@@ -185,12 +198,14 @@ class Contact(db.Model):
     email = db.Column(db.String(120), nullable=False)
     subject = db.Column(db.String(100), nullable=False)
     message = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_posted = db.Column(db.DateTime, nullable=False,
+                            default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return f"ContactMessage('{self.name}', '{self.email}', '{self.subject}')"
-    
+
+
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -211,6 +226,26 @@ class ConcessionItem(db.Model):
     soda = db.Column(db.String(50))
     hotdog = db.Column(db.String(50))
     churros = db.Column(db.String(50))
-  
+
+
 def __repr__(self):
     return '<ConcessionItem id={}>'.format(self.id)
+
+
+class Forum(db. Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    body = db. Column(db. String(140))
+
+    def __repr__(self):
+        return '<Forum{}>'. format(self. body)
+
+
+class Search(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    result_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return f'<Search {self.user_id} -> {self.result_id}>'
